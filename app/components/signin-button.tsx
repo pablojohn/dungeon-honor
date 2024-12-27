@@ -1,11 +1,16 @@
-// import { signIn } from "../../auth"
+import { signIn } from "auth";
+import { Button } from "./button"
 
-export default function SignInButton() {
+export default function SignInButton({
+    provider,
+    ...props
+}: { provider?: string } & React.ComponentPropsWithRef<typeof Button>) {
     return (
         <form action={async () => {
             "use server"
+            await signIn(provider)
         }}>
-            <button>Sign In</button>
+            <Button {...props}>Signin with Battle.net</Button>
         </form>
     )
 }
