@@ -1,12 +1,13 @@
 import NextAuth from "next-auth"
-import GithubProvider from "next-auth/providers/github"
+import BattleNetProvider from "next-auth/providers/github"
 
 export const authOptions = {
     // Configure one or more authentication providers
     providers: [
-        GithubProvider({
-            clientId: process.env.GITHUB_ID as string,
-            clientSecret: process.env.GITHUB_SECRET as string,
+        BattleNetProvider({
+            clientId: process.env.BATTLENET_CLIENT_ID,
+            clientSecret: process.env.BATTLENET_CLIENT_SECRET,
+            issuer: process.env.BATTLENET_ISSUER
         }),
         // ...add more providers here
     ],
