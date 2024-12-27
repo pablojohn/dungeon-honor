@@ -12,7 +12,7 @@ import {
 } from "@radix-ui/react-dropdown-menu";
 
 export default async function UserButton() {
-    const session = await auth();
+    const session = await auth()
     if (!session?.user) return <SignInButton />
     return (
         <div className="flex items-center gap-2">
