@@ -22,10 +22,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 function getCharacterAndRealm(data: BlizzardData): CharacterRealm[] {
   return data.wow_accounts.flatMap(account =>
-    account.characters.map(character => ({
-      name: character.name,
-      realm: character.realm.name,
-    }))
+    account.characters
+      .filter(character => character.level === 80)
+      .map(character => ({
+        name: character.name,
+        realm: character.realm.name,
+      }))
   );
 }
 
@@ -36,6 +38,7 @@ interface Realm {
 interface Character {
   name: string;
   realm: Realm;
+  level: number;
 }
 
 interface WoWAccount {
