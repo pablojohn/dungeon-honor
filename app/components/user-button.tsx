@@ -9,7 +9,7 @@ import {
     DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuTrigger,
-} from "@radix-ui/react-dropdown-menu";
+} from "./dropdown-menu";
 
 export default async function UserButton() {
     const session = await auth()

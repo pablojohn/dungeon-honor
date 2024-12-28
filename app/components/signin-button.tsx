@@ -10,7 +10,7 @@ export default function SignInButton({
             "use server"
             await signIn(provider)
         }}>
-            <Button {...props}>Signin with Battle.net</Button>
+            <Button {...props}>Sign in with Battle.net</Button>
         </form>
     )
 }

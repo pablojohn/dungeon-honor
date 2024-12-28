@@ -9,7 +9,7 @@ export default function SignOutButton(props: React.ComponentPropsWithRef<typeof 
     }}
       className="w-full">
       <Button variant="ghost" className="w-full p-0" {...props}>
-        Signout
+        Sign out
       </Button>
     </form>
   )
