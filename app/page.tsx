@@ -1,5 +1,6 @@
 import { auth } from "auth";
 import SessionData from "./components/session-data";
+import BnetaData from "./components/bnet-data";
 
 export default async function Home() {
   const session = await auth()
@@ -11,6 +12,7 @@ export default async function Home() {
         This is a site used to rate m+ teammates after playing with them.
       </div>
       <SessionData session={session} />
+      <BnetaData accessToken={session?.access_token} />
     </div>
   );
 }
