@@ -6,11 +6,8 @@ export default function SignOutButton(props: React.ComponentPropsWithRef<typeof 
     <form action={async () => {
       "use server"
       await signOut()
-    }}
-      className="w-full">
-      <Button variant="ghost" className="w-full p-0" {...props}>
-        Sign out
-      </Button>
+    }}>
+      <Button {...props}>Sign out</Button>
     </form>
   )
 }

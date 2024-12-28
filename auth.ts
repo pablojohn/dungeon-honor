@@ -1,5 +1,4 @@
 import NextAuth from "next-auth"
-
 import BattleNet from "next-auth/providers/battlenet";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
@@ -11,5 +10,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       issuer: process.env.BATTLENET_ISSUER
     })
   ],
-  basePath: "/auth"
+  basePath: "/auth",
+  callbacks: {
+    jwt({ token, account }) {
+      if (account && account.access_token) {
+        token.access_token = account.access_token
+      }
+      return token
+    }
+  }
 })
