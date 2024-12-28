@@ -11,7 +11,7 @@ export default async function Home() {
       <div>
         This is a site used to rate m+ teammates after playing with them.
       </div>
-      <SessionData session={session.user} />
+      <SessionData session={session?.user} />
       <WoWData accessToken={session?.access_token} />
     </div>
   );
