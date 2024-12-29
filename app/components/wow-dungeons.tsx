@@ -10,6 +10,7 @@ interface Dungeon {
 
 interface WoWDungeonProps {
   dungeons: Dungeon[];
+  userId: string;
 }
 
 interface RunDetailData {
@@ -26,7 +27,7 @@ interface Character {
   realm: string;
 }
 
-export const WoWDungeon: React.FC<WoWDungeonProps> = ({ dungeons }) => {
+export const WoWDungeon: React.FC<WoWDungeonProps> = ({ dungeons, userId }) => {
   const [activeDungeonId, setActiveDungeonId] = useState<number | null>(null);
   const [dungeonRunDetailData, setDungeonRunDetailData] = useState<RunDetailData | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -98,7 +99,8 @@ export const WoWDungeon: React.FC<WoWDungeonProps> = ({ dungeons }) => {
                     num_chests={dungeonRunDetailData.num_chests}
                     clear_time_ms={dungeonRunDetailData.clear_time_ms}
                     time_remaining_ms={dungeonRunDetailData.time_remaining_ms}
-                    characters={dungeonRunDetailData.characters} />
+                    characters={dungeonRunDetailData.characters}
+                    userId={userId} />
                 </div>
               ) : (
                 <pre className="whitespace-pre-wrap break-all px-4 py-6">

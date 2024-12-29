@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { WoWCharacters } from './wow-characters';
 
-export default function WoWData({ accessToken }: { accessToken: string }) {
+export default function WoWData({ accessToken, userId }: { accessToken: string, userId: string }) {
   const [characters, setCharacters] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
@@ -48,9 +48,9 @@ export default function WoWData({ accessToken }: { accessToken: string }) {
   return (
     <div>
       <div className="flex w-full flex-col gap-4 rounded-md bg-gray-100 p-4">
-        <h2 className="text-xl font-bold">Characters</h2>
+        <h2 className="text-xl font-bold">Characters with user - {userId}</h2>
         <div className="flex flex-col rounded-md bg-neutral-100">
-          <WoWCharacters characters={characters} />
+          <WoWCharacters characters={characters} userId={userId} />
         </div>
       </div>
     </div>

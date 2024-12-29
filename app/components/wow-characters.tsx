@@ -12,13 +12,14 @@ interface Character {
 
 interface WoWCharactersProps {
   characters: Character[];
+  userId: string; // Add userId to the props
 }
 
 interface DungeonData {
   dungeons: { name: string; mythic_level: number; keystone_run_id: number }[]; // Adjust structure as per your API response
 }
 
-export const WoWCharacters: React.FC<WoWCharactersProps> = ({ characters }) => {
+export const WoWCharacters: React.FC<WoWCharactersProps> = ({ characters, userId }) => {
   const [activeCharacterId, setActiveCharacterId] = useState<number | null>(null);
   const [dungeonData, setDungeonData] = useState<DungeonData | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -70,8 +71,8 @@ export const WoWCharacters: React.FC<WoWCharactersProps> = ({ characters }) => {
             key={character.id}
             onClick={() => handleCardClick(character.id)}
             className={`rounded-md transition-all ${activeCharacterId === character.id
-                ? "border-2 border-gray-900 bg-white shadow-md"
-                : "border border-gray-300 bg-white hover:shadow-sm"
+              ? "border-2 border-gray-900 bg-white shadow-md"
+              : "border border-gray-300 bg-white hover:shadow-sm"
               } cursor-pointer`}
           >
             <CharacterCard
@@ -93,7 +94,7 @@ export const WoWCharacters: React.FC<WoWCharactersProps> = ({ characters }) => {
               !error &&
               (dungeonData && dungeonData.dungeons.length > 0 ? (
                 <div>
-                  <WoWDungeon dungeons={dungeonData.dungeons} />
+                  <WoWDungeon dungeons={dungeonData.dungeons} userId={userId} />
                 </div>
               ) : (
                 <pre className="whitespace-pre-wrap break-all px-4 py-6">

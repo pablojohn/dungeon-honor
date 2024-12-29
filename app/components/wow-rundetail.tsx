@@ -7,6 +7,7 @@ interface WoWRunDetailProps {
   clear_time_ms: number;
   time_remaining_ms: number;
   characters: Character[];
+  userId: string;
 }
 
 interface Character {
@@ -15,7 +16,7 @@ interface Character {
   realm: string;
 }
 
-export const WoWRunDetail: React.FC<WoWRunDetailProps> = ({ keystone_run_id, num_chests, clear_time_ms, time_remaining_ms, characters }) => {
+export const WoWRunDetail: React.FC<WoWRunDetailProps> = ({ keystone_run_id, num_chests, clear_time_ms, time_remaining_ms, characters, userId }) => {
   const clearTimeSeconds = Math.floor(clear_time_ms / 1000);
   const timeRemainingSeconds = Math.floor(time_remaining_ms / 1000);
 
@@ -55,7 +56,7 @@ export const WoWRunDetail: React.FC<WoWRunDetailProps> = ({ keystone_run_id, num
       </div>
       {characters &&
         characters.map((character) => {
-          const slug = `${keystone_run_id}-${character.name.replace(' ', '-').toLowerCase()}-${character.realm.replace(' ', '-').toLowerCase()}`;
+          const slug = `${keystone_run_id}-${character.name.replace(' ', '-').toLowerCase()}-${character.realm.replace(' ', '-').toLowerCase()}-${userId}`;
           return (
             <div key={character.id}>
               <RunDetailCard name={character.name} realm={character.realm} slug={slug} />

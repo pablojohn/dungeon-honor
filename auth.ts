@@ -13,14 +13,18 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   ],
   basePath: "/auth",
   callbacks: {
-    jwt({ token, account }) {
+    jwt({ token, account, user }) {
       if (account && account.access_token) {
         token.access_token = account.access_token
+      }
+      if (user) {
+        token.id = user.id
       }
       return token
     },
     async session({ session, token }) {
       session.access_token = token.access_token
+      session.user.id = token.id
       return session;
     }
   }
