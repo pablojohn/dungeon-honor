@@ -15,7 +15,7 @@ interface WoWCharactersProps {
 }
 
 interface DungeonData {
-  dungeons: { name: string, mythic_level: number, keystone_run_id: number }[]; // Adjust structure as per your API response
+  dungeons: { name: string; mythic_level: number; keystone_run_id: number }[]; // Adjust structure as per your API response
 }
 
 export const WoWCharacters: React.FC<WoWCharactersProps> = ({ characters }) => {
@@ -25,11 +25,11 @@ export const WoWCharacters: React.FC<WoWCharactersProps> = ({ characters }) => {
   const [error, setError] = useState<string | null>(null);
 
   const handleCardClick = (id: number) => {
-    setActiveCharacterId(prevId => (prevId === id ? null : id));
+    setActiveCharacterId((prevId) => (prevId === id ? null : id));
   };
 
   // Get the active character details
-  const activeCharacter = characters.find(character => character.id === activeCharacterId);
+  const activeCharacter = characters.find((character) => character.id === activeCharacterId);
 
   // Fetch dungeons when activeCharacterId changes
   useEffect(() => {
@@ -44,7 +44,7 @@ export const WoWCharacters: React.FC<WoWCharactersProps> = ({ characters }) => {
           const response = await fetch(`/api/getDungeons?name=${name}&realm=${realm}`);
 
           if (!response.ok) {
-            throw new Error('Failed to fetch dungeons');
+            throw new Error("Failed to fetch dungeons");
           }
 
           const data = await response.json();
@@ -64,16 +64,24 @@ export const WoWCharacters: React.FC<WoWCharactersProps> = ({ characters }) => {
 
   return (
     <div className="flex flex-wrap gap-4">
-      {characters && characters.map((character) => (
-        <div key={character.id} onClick={() => handleCardClick(character.id)}>
-          <CharacterCard
-            realm={character.realm}
-            name={character.name}
-            playable_class={character.class}
-            playable_race={character.race}
-          />
-        </div>
-      ))}
+      {characters &&
+        characters.map((character) => (
+          <div
+            key={character.id}
+            onClick={() => handleCardClick(character.id)}
+            className={`rounded-md transition-all ${activeCharacterId === character.id
+                ? "border-2 border-gray-900 bg-white shadow-md"
+                : "border border-gray-300 bg-white hover:shadow-sm"
+              } cursor-pointer`}
+          >
+            <CharacterCard
+              realm={character.realm}
+              name={character.name}
+              playable_class={character.class}
+              playable_race={character.race}
+            />
+          </div>
+        ))}
       {activeCharacterId && activeCharacter && (
         <div className="flex w-full flex-col gap-4 rounded-md bg-gray-100 p-4">
           <h2 className="text-xl font-bold">Dungeons</h2>
@@ -81,8 +89,9 @@ export const WoWCharacters: React.FC<WoWCharactersProps> = ({ characters }) => {
             {/* Loading, Error, or Data Display */}
             {loading && <p>Loading dungeons...</p>}
             {error && <p className="text-red-500">{error}</p>}
-            {!loading && !error && (
-              dungeonData && dungeonData.dungeons.length > 0 ? (
+            {!loading &&
+              !error &&
+              (dungeonData && dungeonData.dungeons.length > 0 ? (
                 <div>
                   <WoWDungeon dungeons={dungeonData.dungeons} />
                 </div>
@@ -90,8 +99,7 @@ export const WoWCharacters: React.FC<WoWCharactersProps> = ({ characters }) => {
                 <pre className="whitespace-pre-wrap break-all px-4 py-6">
                   {activeCharacter.name} from {activeCharacter.realm} has completed no dungeons this week.
                 </pre>
-              )
-            )}
+              ))}
           </div>
         </div>
       )}

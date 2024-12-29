@@ -72,7 +72,12 @@ export const WoWDungeon: React.FC<WoWDungeonProps> = ({ dungeons }) => {
   return (
     <div className="flex flex-wrap gap-4">
       {dungeons && dungeons.map((dungeon) => (
-        <div key={dungeon.keystone_run_id} onClick={() => handleCardClick(dungeon.keystone_run_id)}>
+        <div key={dungeon.keystone_run_id}
+             onClick={() => handleCardClick(dungeon.keystone_run_id)}
+             className={`rounded-md transition-all ${activeDungeonId === dungeon.keystone_run_id
+              ? "border-2 border-gray-900 bg-white shadow-md"
+              : "border border-gray-300 bg-white hover:shadow-sm"
+            } cursor-pointer`}>
           <DungeonCard
             name={dungeon.name}
             mythic_level={dungeon.mythic_level} />
