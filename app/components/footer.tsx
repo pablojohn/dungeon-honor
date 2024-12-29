@@ -1,4 +1,5 @@
 import CustomLink from "./custom-link";
+import { Coffee } from "lucide-react";
 
 export default function Footer() {
     return (
@@ -7,6 +8,10 @@ export default function Footer() {
                 <CustomLink href="https://github.com/pablojohn/wow-behave">
                     Source on GitHub
                 </CustomLink>
+                <CustomLink href="https://paypal.me/pablojohnm?country.x=US&locale.x=en_US" className="flex items-center space-x-1">
+                    <Coffee className="inline-block" />
+                    <span className="ml-2">Donate</span>
+                </CustomLink>
             </div>
             <div className="flex items-center justify-start gap-2">
                 <CustomLink href="https://pablojohn.dev">
@@ -14,5 +19,5 @@ export default function Footer() {
                 </CustomLink>
             </div>
         </footer>
-    )
+    );
 }
