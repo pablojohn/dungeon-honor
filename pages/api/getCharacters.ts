@@ -25,8 +25,11 @@ function getCharacterAndRealm(data: BlizzardData): CharacterRealm[] {
     account.characters
       .filter(character => character.level === 80)
       .map(character => ({
+        id: character.id,
         name: character.name,
         realm: character.realm.name,
+        class: character.playable_class.name,
+        race: character.playable_race.name
       }))
   );
 }
@@ -36,9 +39,12 @@ interface Realm {
 }
 
 interface Character {
+  id: number;
   name: string;
   realm: Realm;
   level: number;
+  playable_class: CharacterClass;
+  playable_race: CharacterRace;
 }
 
 interface WoWAccount {
@@ -52,4 +58,12 @@ interface BlizzardData {
 interface CharacterRealm {
   name: string;
   realm: string;
+}
+
+interface CharacterClass {
+  name: string;
+}
+
+interface CharacterRace {
+  name: string;
 }
