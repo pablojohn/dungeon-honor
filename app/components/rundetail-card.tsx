@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Sword, ShieldPlus, MessageSquareMore, HeartPulse } from "lucide-react";
 
 interface CardProps {
@@ -27,8 +27,11 @@ const saveBehaviorToUpstash = async (slug: string, behavior: string) => {
 };
 
 export const RunDetailCard: React.FC<CardProps> = ({ name, realm, slug }) => {
+  const [selectedBehavior, setSelectedBehavior] = useState<string | null>(null);
+
   const handleButtonClick = (behavior: string) => {
     saveBehaviorToUpstash(slug, behavior);
+    setSelectedBehavior(behavior); // Update state with the selected behavior
   };
 
   return (
@@ -67,6 +70,11 @@ export const RunDetailCard: React.FC<CardProps> = ({ name, realm, slug }) => {
           Giga Heals
         </button>
       </div>
+      {selectedBehavior && (
+        <div className="mt-4 text-center text-sm text-gray-700">
+          You selected: <span className="font-medium">{selectedBehavior}</span>
+        </div>
+      )}
     </div>
   );
 };
