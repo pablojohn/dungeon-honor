@@ -35,10 +35,10 @@ export default function WoWData({ accessToken }: { accessToken: string }) {
   if (error) {
     return (
       <div className="flex w-full flex-col gap-4 rounded-md bg-gray-100 p-4">
-        <h2 className="text-xl font-bold">World of Warcraft Data</h2>
+        <h2 className="text-xl font-bold">Characters</h2>
         <div className="flex flex-col rounded-md bg-neutral-100">
           <pre className="whitespace-pre-wrap break-all px-4 py-6">
-            Error: {error.message}
+            {error.message}
           </pre>
         </div>
       </div>
@@ -48,7 +48,7 @@ export default function WoWData({ accessToken }: { accessToken: string }) {
   return (
     <div>
       <div className="flex w-full flex-col gap-4 rounded-md bg-gray-100 p-4">
-        <h2 className="text-xl font-bold">World of Warcraft Data (Battle.net)</h2>
+        <h2 className="text-xl font-bold">Characters</h2>
         <div className="flex flex-col rounded-md bg-neutral-100">
           <WoWCharacters characters={characters} />
         </div>

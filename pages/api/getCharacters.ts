@@ -10,7 +10,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   });
 
   if (!response.ok) {
-    return res.status(500).json({ error: 'Failed to fetch Battle.net data' });
+    return res.status(500).json({ error: 'Failed to fetch characters from bnet' });
   }
 
   const bnetData = await response.json();

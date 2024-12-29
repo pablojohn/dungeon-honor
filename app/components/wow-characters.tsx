@@ -78,7 +78,7 @@ export const WoWCharacters: React.FC<WoWCharactersProps> = ({ characters }) => {
       {/* Conditionally render the content for the active character */}
       {activeCharacterId && activeCharacter && (
         <div className="flex w-full flex-col gap-4 rounded-md bg-gray-100 p-4">
-          <h2 className="text-xl font-bold">World of Warcraft Data (RaiderIO)</h2>
+          <h2 className="text-xl font-bold">Dungeons</h2>
           <div className="flex flex-col rounded-md bg-neutral-100">
             {/* Loading, Error, or Data Display */}
             {loading && <p>Loading dungeons...</p>}
@@ -87,17 +87,6 @@ export const WoWCharacters: React.FC<WoWCharactersProps> = ({ characters }) => {
               dungeonData && dungeonData.dungeons.length > 0 ? (
                 <div>
                   <WoWDungeon dungeons={dungeonData.dungeons} />
-                  {/* <ul>
-                    {dungeonData.dungeons.map((dungeon, index) => (
-                      <li key={index}>
-                        <div>
-                          <p><strong>{dungeon.dungeon}</strong></p>
-                          <p>Mythic Level: {dungeon.mythic_level}</p>
-                          <p>Keystone Run ID: {dungeon.keystone_run_id}</p>
-                        </div>
-                      </li>
-                    ))}
-                  </ul> */}
                 </div>
               ) : (
                 <pre className="whitespace-pre-wrap break-all px-4 py-6">
