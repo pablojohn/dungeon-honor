@@ -13,6 +13,7 @@ interface WoWDungeonProps {
 }
 
 interface RunDetailData {
+  keystone_run_id: number;
   num_chests: number;
   clear_time_ms: number;
   time_remaining_ms: number;
@@ -93,6 +94,7 @@ export const WoWDungeon: React.FC<WoWDungeonProps> = ({ dungeons }) => {
               dungeonRunDetailData ? (
                 <div>
                   <WoWRunDetail
+                    keystone_run_id={activeDungeonId}
                     num_chests={dungeonRunDetailData.num_chests}
                     clear_time_ms={dungeonRunDetailData.clear_time_ms}
                     time_remaining_ms={dungeonRunDetailData.time_remaining_ms}

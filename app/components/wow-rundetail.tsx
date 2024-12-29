@@ -2,6 +2,7 @@ import React from 'react';
 import { RunDetailCard } from './rundetail-card';
 
 interface WoWRunDetailProps {
+  keystone_run_id: number;
   num_chests: number;
   clear_time_ms: number;
   time_remaining_ms: number;
@@ -14,7 +15,7 @@ interface Character {
   realm: string;
 }
 
-export const WoWRunDetail: React.FC<WoWRunDetailProps> = ({ num_chests, clear_time_ms, time_remaining_ms, characters }) => {
+export const WoWRunDetail: React.FC<WoWRunDetailProps> = ({ keystone_run_id, num_chests, clear_time_ms, time_remaining_ms, characters }) => {
   const clearTimeSeconds = Math.floor(clear_time_ms / 1000);
   const timeRemainingSeconds = Math.floor(time_remaining_ms / 1000);
 
@@ -54,7 +55,7 @@ export const WoWRunDetail: React.FC<WoWRunDetailProps> = ({ num_chests, clear_ti
       </div>
       {characters &&
         characters.map((character) => {
-          const slug = `${character.id}-${character.name.replace(' ', '-').toLowerCase()}-${character.realm.replace(' ', '-').toLowerCase()}`;
+          const slug = `${keystone_run_id}-${character.name.replace(' ', '-').toLowerCase()}-${character.realm.replace(' ', '-').toLowerCase()}`;
           return (
             <div key={character.id}>
               <RunDetailCard name={character.name} realm={character.realm} slug={slug} />
