@@ -1,2 +1,2 @@
 # WoW Behave
-A site used to track behavior of M+ players
+A place used to rate teammate behavior in m+ dungeons.
