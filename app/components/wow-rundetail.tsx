@@ -19,7 +19,7 @@ export const WoWRunDetail: React.FC<WoWRunDetailProps> = ({ num_chests, clear_ti
   const timeRemainingSeconds = Math.floor(time_remaining_ms / 1000);
 
   return (
-    <div className="flex flex-wrap gap-4">
+    <div className="flex flex-col gap-4">
       <div className="bg-gray-100 p-4 rounded-lg shadow-md w-full">
         <ul className="flex space-x-6 text-gray-600">
           {num_chests !== undefined && (
