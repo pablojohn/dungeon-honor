@@ -53,11 +53,14 @@ export const WoWRunDetail: React.FC<WoWRunDetailProps> = ({ num_chests, clear_ti
         </ul>
       </div>
       {characters &&
-        characters.map((character) => (
-          <div key={character.id}>
-            <RunDetailCard name={character.name} realm={character.realm} />
-          </div>
-        ))}
+        characters.map((character) => {
+          const slug = `${character.id}-${character.name.replace(' ', '-').toLowerCase()}-${character.realm.replace(' ', '-').toLowerCase()}`;
+          return (
+            <div key={character.id}>
+              <RunDetailCard name={character.name} realm={character.realm} slug={slug} />
+            </div>
+          );
+        })}
     </div>
   );
 };
