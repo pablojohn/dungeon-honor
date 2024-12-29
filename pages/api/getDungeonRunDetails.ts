@@ -24,6 +24,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     characters: data.roster.map((entry: any) => ({
       id: entry.character.id,
       name: entry.character.name,
+      realm: entry.character.realm.name
     })),
   };
 

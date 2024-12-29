@@ -74,8 +74,6 @@ export const WoWCharacters: React.FC<WoWCharactersProps> = ({ characters }) => {
           />
         </div>
       ))}
-
-      {/* Conditionally render the content for the active character */}
       {activeCharacterId && activeCharacter && (
         <div className="flex w-full flex-col gap-4 rounded-md bg-gray-100 p-4">
           <h2 className="text-xl font-bold">Dungeons</h2>

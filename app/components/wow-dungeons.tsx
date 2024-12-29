@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { DungeonCard } from "./dungeon-card";
+import { WoWRunDetail } from "./wow-rundetail";
 
 interface Dungeon {
   name: string;
@@ -11,13 +12,22 @@ interface WoWDungeonProps {
   dungeons: Dungeon[];
 }
 
-interface DungeonRunDetailData {
+interface RunDetailData {
+  num_chests: number;
+  clear_time_ms: number;
+  time_remaining_ms: number;
+  characters: Character[];
+}
 
+interface Character {
+  id: number;
+  name: string;
+  realm: string;
 }
 
 export const WoWDungeon: React.FC<WoWDungeonProps> = ({ dungeons }) => {
   const [activeDungeonId, setActiveDungeonId] = useState<number | null>(null);
-  const [dungeonRunDetailData, setDungeonRunDetailData] = useState<any | null>(null);
+  const [dungeonRunDetailData, setDungeonRunDetailData] = useState<RunDetailData | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -70,11 +80,25 @@ export const WoWDungeon: React.FC<WoWDungeonProps> = ({ dungeons }) => {
       ))}
       {activeDungeonId && activeDungeon && (
         <div className="flex w-full flex-col gap-4 rounded-md bg-gray-100 p-4">
-          <h2 className="text-xl font-bold">Dungeon Run</h2>
+          <h2 className="text-xl font-bold">Run  Detail</h2>
           <div className="flex flex-col rounded-md bg-neutral-100">
-            <pre className="whitespace-pre-wrap break-all px-4 py-6">
-              {dungeonRunDetailData ? JSON.stringify(dungeonRunDetailData, null, 2) : "No dungeon run details available."}
-            </pre>
+            {loading && <p>Loading run detail...</p>}
+            {error && <p className="text-red-500">{error}</p>}
+            {!loading && !error && (
+              dungeonRunDetailData ? (
+                <div>
+                  <WoWRunDetail
+                    num_chests={dungeonRunDetailData.num_chests}
+                    clear_time_ms={dungeonRunDetailData.clear_time_ms}
+                    time_remaining_ms={dungeonRunDetailData.time_remaining_ms}
+                    characters={dungeonRunDetailData.characters} />
+                </div>
+              ) : (
+                <pre className="whitespace-pre-wrap break-all px-4 py-6">
+                  {dungeonRunDetailData ? JSON.stringify(dungeonRunDetailData, null, 2) : "No dungeon run details available."}
+                </pre>
+              )
+            )}
           </div>
         </div>
       )}
