@@ -15,7 +15,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const bnetData = await response.json();
 
-  var characters = getCharacterAndRealm(bnetData);
+  const characters = getCharacterAndRealm(bnetData);
 
   res.status(200).json(characters);
 }

@@ -1,5 +1,13 @@
-import NextAuth from "next-auth"
+import NextAuth from "next-auth";
 import BattleNet from "next-auth/providers/battlenet";
+
+declare module "next-auth" {
+  interface Session {
+    access_token?: string;
+  }
+}
+
+const issuer = process.env.BATTLENET_ISSUER || "https://oauth.battle.net";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   debug: true,
@@ -7,25 +15,25 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     BattleNet({
       clientId: process.env.BATTLENET_CLIENT_ID,
       clientSecret: process.env.BATTLENET_CLIENT_SECRET,
-      issuer: process.env.BATTLENET_ISSUER,
-      authorization: { params: { 'scope': 'openid wow.profile' } }
+      issuer: issuer as "https://oauth.battle.net" | "https://oauth.battlenet.com.cn" | "https://www.battlenet.com.cn/oauth" | "https://us.battle.net/oauth" | "https://eu.battle.net/oauth" | "https://kr.battle.net/oauth" | "https://tw.battle.net/oauth",
+      authorization: { params: { scope: "openid wow.profile" } }
     })
   ],
   basePath: "/auth",
   callbacks: {
     jwt({ token, account, user }) {
       if (account && account.access_token) {
-        token.access_token = account.access_token
+        token.access_token = account.access_token;
       }
       if (user) {
-        token.id = user.id
+        token.id = user.id;
       }
-      return token
+      return token;
     },
     async session({ session, token }) {
-      session.access_token = token.access_token
-      session.user.id = token.id
+      session.access_token = token.access_token as string | undefined;
+      session.user.id = token.id as string;
       return session;
     }
   }
-})
+});

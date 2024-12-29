@@ -3,7 +3,15 @@ import { useEffect, useState } from 'react';
 import { WoWCharacters } from './wow-characters';
 
 export default function WoWData({ accessToken, userId }: { accessToken: string, userId: string }) {
-  const [characters, setCharacters] = useState<any[]>([]);
+  interface Character {
+    id: number;
+    name: string;
+    realm: string;
+    class: string;
+    race: string;
+  }
+
+  const [characters, setCharacters] = useState<Character[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 

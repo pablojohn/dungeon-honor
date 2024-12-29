@@ -10,7 +10,7 @@ export default async function Home() {
       <div>
         A place used to rate teammate behavior in m+ dungeons.
       </div>
-      <WoWData accessToken={session?.access_token} userId={session?.user?.id} />
+      <WoWData accessToken={session?.access_token ?? ""} userId={session?.user?.id ?? ""} />
     </div>
   );
 }

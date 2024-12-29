@@ -21,7 +21,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     num_chests: data.num_chests,
     clear_time_ms: data.clear_time_ms,
     time_remaining_ms: data.time_remaining_ms,
-    characters: data.roster.map((entry: any) => ({
+    characters: data.roster.map((entry: { character: { id: string; name: string; realm: { name: string } } }) => ({
       id: entry.character.id,
       name: entry.character.name,
       realm: entry.character.realm.name
