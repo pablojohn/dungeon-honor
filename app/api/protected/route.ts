@@ -7,4 +7,4 @@ export const GET = auth((req) => {
 
     return Response.json({ message: "Not authenticated" }, { status: 401 })
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-}) as any // TODO: Fix `auth()` return type
+}) as any // TODO: Fix `auth()` return type - uncomment line above when fixed
