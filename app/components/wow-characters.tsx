@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { CharacterCard } from "./character-card";
+import { WoWDungeon } from "./wow-dungeons";
 
 interface Character {
   id: number;
@@ -14,7 +15,7 @@ interface WoWCharactersProps {
 }
 
 interface DungeonData {
-  dungeons: { dungeon: string, mythic_level: number, keystone_run_id: string }[]; // Adjust structure as per your API response
+  dungeons: { name: string, mythic_level: number, keystone_run_id: number }[]; // Adjust structure as per your API response
 }
 
 export const WoWCharacters: React.FC<WoWCharactersProps> = ({ characters }) => {
@@ -85,8 +86,8 @@ export const WoWCharacters: React.FC<WoWCharactersProps> = ({ characters }) => {
             {!loading && !error && (
               dungeonData && dungeonData.dungeons.length > 0 ? (
                 <div>
-                  <h3 className="font-bold">Dungeons:</h3>
-                  <ul>
+                  <WoWDungeon dungeons={dungeonData.dungeons} />
+                  {/* <ul>
                     {dungeonData.dungeons.map((dungeon, index) => (
                       <li key={index}>
                         <div>
@@ -96,7 +97,7 @@ export const WoWCharacters: React.FC<WoWCharactersProps> = ({ characters }) => {
                         </div>
                       </li>
                     ))}
-                  </ul>
+                  </ul> */}
                 </div>
               ) : (
                 <pre className="whitespace-pre-wrap break-all px-4 py-6">

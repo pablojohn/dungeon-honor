@@ -20,7 +20,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   // Map over the data to extract only the necessary fields
   const reducedData = data.mythic_plus_weekly_highest_level_runs.map((run: MythicPlusRun) => ({
-    dungeon: run.dungeon,
+    name: run.dungeon,
     mythic_level: run.mythic_level,
     keystone_run_id: run.keystone_run_id
   }));
