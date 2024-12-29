@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card } from "./card";
+import { CharacterCard } from "./character-card";
 
 interface Character {
   id: number;
@@ -65,7 +65,7 @@ export const WoWCharacters: React.FC<WoWCharactersProps> = ({ characters }) => {
     <div className="flex flex-wrap gap-4">
       {characters && characters.map((character) => (
         <div key={character.id} onClick={() => handleCardClick(character.id)}>
-          <Card
+          <CharacterCard
             realm={character.realm}
             name={character.name}
             playable_class={character.class}

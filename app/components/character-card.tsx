@@ -7,7 +7,7 @@ interface CardProps {
   playable_race: string;
 }
 
-export const Card: React.FC<CardProps> = ({ realm, name, playable_class, playable_race }) => {
+export const CharacterCard: React.FC<CardProps> = ({ realm, name, playable_class, playable_race }) => {
   return (
     <div className="max-w-sm mx-auto p-4 bg-white rounded-lg shadow-md border border-gray-200">
       <div className="text-center">
