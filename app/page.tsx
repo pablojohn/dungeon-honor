@@ -1,5 +1,4 @@
 import { auth } from "auth";
-import SessionData from "./components/session-data";
 import WoWData from "./components/wow-data";
 
 export default async function Home() {
@@ -11,7 +10,6 @@ export default async function Home() {
       <div>
         This is a site used to rate m+ teammates after playing with them.
       </div>
-      <SessionData session={session?.user} />
       <WoWData accessToken={session?.access_token} />
     </div>
   );

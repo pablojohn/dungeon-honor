@@ -1,6 +1,7 @@
 import React from "react";
 import type { Session } from "next-auth"
 
+// TODO: Remove this component if not using it
 export default function SessionData({ session }: { session: Session | null }) {
   return (
     <div className="flex w-full flex-col gap-4 rounded-md bg-gray-100 p-4">
