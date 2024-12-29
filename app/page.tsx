@@ -8,7 +8,7 @@ export default async function Home() {
     <div className="flex flex-col gap-6">
       <h1 className="text-3xl font-bold">WoW Behave</h1>
       <div>
-        This is a site used to rate m+ teammates after playing with them.
+        A place used to rate teammate behavior in m+ dungeons.
       </div>
       <WoWData accessToken={session?.access_token} userId={session?.user?.id} />
     </div>

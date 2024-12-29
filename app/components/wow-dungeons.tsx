@@ -87,7 +87,7 @@ export const WoWDungeon: React.FC<WoWDungeonProps> = ({ dungeons, userId }) => {
       ))}
       {activeDungeonId && activeDungeon && (
         <div className="flex w-full flex-col gap-4 rounded-md bg-gray-100 p-4">
-          <h2 className="text-xl font-bold">Run  Detail</h2>
+          <h2 className="text-xl font-bold">Run  Detail - <span className="text-base font-normal">Rate a teammates behavior</span></h2>
           <div className="flex flex-col rounded-md bg-neutral-100">
             {loading && <p>Loading run detail...</p>}
             {error && <p className="text-red-500">{error}</p>}

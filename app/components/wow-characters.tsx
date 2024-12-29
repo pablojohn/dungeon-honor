@@ -85,7 +85,7 @@ export const WoWCharacters: React.FC<WoWCharactersProps> = ({ characters, userId
         ))}
       {activeCharacterId && activeCharacter && (
         <div className="flex w-full flex-col gap-4 rounded-md bg-gray-100 p-4">
-          <h2 className="text-xl font-bold">Dungeons</h2>
+          <h2 className="text-xl font-bold">Dungeons - <span className="text-base font-normal">Select a dungeon run</span></h2>
           <div className="flex flex-col rounded-md bg-neutral-100">
             {/* Loading, Error, or Data Display */}
             {loading && <p>Loading dungeons...</p>}

@@ -48,7 +48,7 @@ export default function WoWData({ accessToken, userId }: { accessToken: string, 
   return (
     <div>
       <div className="flex w-full flex-col gap-4 rounded-md bg-gray-100 p-4">
-        <h2 className="text-xl font-bold">Characters</h2>
+        <h2 className="text-xl font-bold">Characters - <span className="text-base font-normal">Select a character</span></h2>
         <div className="flex flex-col rounded-md bg-neutral-100">
           <WoWCharacters characters={characters} userId={userId} />
         </div>
