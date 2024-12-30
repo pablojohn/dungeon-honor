@@ -1,14 +1,17 @@
 "use client"
 
 import { useState } from "react";
-import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import BehaviorGraph from "./behavior-graph";
 
 export default function ReportCard() {
   const [name, setName] = useState("");
   const [realm, setRealm] = useState("");
+  const [submittedName, setSubmittedName] = useState(""); // Store name after submission
+  const [submittedRealm, setSubmittedRealm] = useState(""); // Store realm after submission
   const [error, setError] = useState({ name: false, realm: false });
   const [reportData, setReportData] = useState(null); // State to hold the API response
   const [loading, setLoading] = useState(false); // State to manage loading state
+  const [submitted, setSubmitted] = useState(false); // Track if form has been submitted
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,6 +29,11 @@ export default function ReportCard() {
     }
 
     setLoading(true); // Set loading to true when submitting
+    setSubmitted(true); // Mark the form as submitted
+
+    // Store submitted name and realm after successful form submission
+    setSubmittedName(name);
+    setSubmittedRealm(realm);
 
     try {
       const response = await fetch(
@@ -56,17 +64,13 @@ export default function ReportCard() {
   };
 
   // Function to process data and aggregate the counts for each behavior type
-
   const processGraphData = () => {
     if (!reportData?.data) return [];
 
-    // Extract behavior names and ensure there's no accidental whitespace or variation
     const labels = reportData.data.map(item => {
-      const behaviorName = item.key.split(':').pop()?.trim(); // Ensure any extra spaces are removed
+      const behaviorName = item.key.split(':').pop()?.trim();
       return behaviorName || '';  // Fallback if the split doesn't produce a valid name
     });
-
-    console.log('Extracted Behavior Names:', labels); // Debugging: Check the behavior names
 
     // Count occurrences of each label
     const labelCount = labels.reduce((acc, label) => {
@@ -76,8 +80,6 @@ export default function ReportCard() {
       return acc;
     }, {});
 
-    console.log('Behavior Counts:', labelCount); // Debugging: Check the counts of each behavior type
-
     // Convert label counts to a format suitable for recharts
     return Object.keys(labelCount).map(label => ({
       name: label,
@@ -86,19 +88,6 @@ export default function ReportCard() {
   };
 
   const chartData = processGraphData();
-
-  const getBarColor = (name: string) => {
-    switch (name) {
-      case "Good Comms":
-        return "#28a745"; // Green
-      case "Giga Heals":
-        return "#ffc107"; // Yellow
-      case "Big Dam":
-        return "#dc3545"; // Red
-      default:
-        return "#8884d8"; // Default color (optional)
-    }
-  };
 
   return (
     <div className="flex justify-center items-start bg-gray-100 pt-20 pb-10 w-full">
@@ -148,33 +137,14 @@ export default function ReportCard() {
           </button>
         </form>
 
-        {/* Section below the form to show loading or API content */}
         <div className="mt-6 w-full">
-          {/* Loading indicator */}
           {loading && <p className="text-center text-blue-500">Loading...</p>}
-
-          {/* Displaying API response data */}
-          {reportData && !loading && (
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <h2 className="text-2xl font-semibold">PUT CHAR NAME HERE</h2>
-              {/* Display the graph */}
-              <div className="mt-6">
-                <ResponsiveContainer width="100%" height={400}>
-                  <BarChart data={chartData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Bar dataKey="value" radius={5}>
-                      {chartData.map((data, index) => (
-                        <Cell key={`cell-${index}`} fill={getBarColor(data.name)} />
-                      ))}
-                    </Bar>
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-            </div>
+          {submitted && !loading && reportData && (
+            <BehaviorGraph
+              name={submittedName} // Pass the submitted name
+              realm={submittedRealm} // Pass the submitted realm
+              chartData={chartData}
+            />
           )}
         </div>
       </div>
