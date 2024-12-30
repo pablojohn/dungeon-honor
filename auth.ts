@@ -23,7 +23,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       clientId: process.env.BATTLENET_CLIENT_ID,
       clientSecret: process.env.BATTLENET_CLIENT_SECRET,
       issuer: issuer,
-      authorization: { params: { scope: "openid wow.profile" } }
+      authorization: { params: { scope: "openid wow.profile", state: "wow-behave-dev" } }
     })
   ],
   basePath: "/auth",
