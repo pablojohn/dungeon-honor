@@ -31,8 +31,8 @@ const RejoinRatingGraph: React.FC<RejoinRatingGraphProps> = ({ rejoinData }) => 
 
     // Return the processed data for the bar graph
     return [
-      { name: "True", value: ratingCounts.true },
-      { name: "False", value: ratingCounts.false },
+      { name: "Yes", value: ratingCounts.true },
+      { name: "No", value: ratingCounts.false },
     ];
   };
 
@@ -55,14 +55,14 @@ const RejoinRatingGraph: React.FC<RejoinRatingGraphProps> = ({ rejoinData }) => 
                 id: data.name,
                 value: data.name,
                 type: "line", // Adjust the shape of legend items if needed
-                color: data.name === 'True' ? '#28a745' : '#dc3545', // Green for True, Red for False
+                color: data.name === 'Yes' ? '#8a2be2' : '#ff8c00', // Purple for Yes, Orange for No
               }))}
             />
             <Bar dataKey="value" radius={5}>
               {rejoinChartData.map((data, index) => (
                 <Cell
                   key={`cell-${index}`}
-                  fill={data.name === 'True' ? '#28a745' : '#dc3545'} // Green for True, Red for False
+                  fill={data.name === 'Yes' ? '#8a2be2' : '#ff8c00'} // Purple for Yes, Orange for No
                 />
               ))}
             </Bar>
