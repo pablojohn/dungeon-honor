@@ -57,11 +57,12 @@ export default function ReportCard() {
         setRealm("");
         setError({ name: false, realm: false }); // Clear errors
       } else {
-        alert("Error submitting. Please try again.");
+        // If API returns a bad response (e.g., 404), reset the report data
+        setReportData(null);
       }
     } catch (error) {
       console.error("Error:", error);
-      alert("An unexpected error occurred.");
+      setReportData(null); // Reset report data on error
     } finally {
       setLoading(false); // Reset loading state after the API call
     }
@@ -148,8 +149,13 @@ export default function ReportCard() {
 
         <div className="mt-6 w-full">
           {loading && <p className="text-center">Loading report card...</p>}
-          {submitted && !loading && reportData && (
-            <BehaviorGraph
+          {submitted && !loading && !reportData && (
+            <p className="text-center text-gray-600">No report card data found.</p>
+          )}
+          {submitted && !loading && reportData && reportData.data.length === 0 ? (
+            <p className="text-center text-gray-600">No report card data found.</p>
+          ) : (
+            reportData && <BehaviorGraph
               name={submittedName} // Pass the submitted name
               realm={submittedRealm} // Pass the submitted realm
               chartData={chartData}
