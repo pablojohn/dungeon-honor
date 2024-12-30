@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Sword, ShieldPlus, MessageSquareMore, HeartPulse } from "lucide-react";
+import { Sword, ShieldPlus, MessageSquareMore, HeartPulse, CheckCircle } from "lucide-react";
 
 interface CardProps {
   name: string;
@@ -71,8 +71,11 @@ export const RunDetailCard: React.FC<CardProps> = ({ name, realm, slug }) => {
         </button>
       </div>
       {selectedBehavior && (
-        <div className="mt-4 text-center text-sm text-gray-700">
-          You selected: <span className="font-medium">{selectedBehavior}</span>
+        <div className="mt-4 text-center text-lg text-green-700 flex items-center justify-center gap-2">
+          <CheckCircle className="w-6 h-6 text-green-500" />
+          <span className="font-semibold">
+            Nice! <span className="text-gray-900">{selectedBehavior}</span> was recorded for <span className="text-gray-900">{name}</span>.
+          </span>
         </div>
       )}
     </div>
