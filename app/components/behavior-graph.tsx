@@ -1,12 +1,10 @@
 import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
 interface BehaviorGraphProps {
-  name: string;
-  realm: string;
   chartData: { name: string; value: number }[];
 }
 
-const BehaviorGraph = ({ name, realm, chartData }: BehaviorGraphProps) => {
+const BehaviorGraph = ({ chartData }: BehaviorGraphProps) => {
   const getBarColor = (name: string) => {
     switch (name) {
       case "Uses Defensives":
@@ -25,7 +23,7 @@ const BehaviorGraph = ({ name, realm, chartData }: BehaviorGraphProps) => {
   return (
     <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-3xl mx-auto">
       <h2 className="text-2xl font-semibold">
-        {name} - {realm}
+        Behaviors
       </h2>
       <div className="mt-6">
         <ResponsiveContainer width="100%" height={400}>

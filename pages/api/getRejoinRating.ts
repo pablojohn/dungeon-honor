@@ -5,7 +5,7 @@ export const config = {
   runtime: "edge",
 };
 
-export default async function GetBehavior(req: Request) {
+export default async function GetRejoinRating(req: Request) {
   if (req.method !== 'GET') {
     return new Response(
       JSON.stringify({ error: 'Method not allowed. Use GET.' }),
@@ -25,7 +25,7 @@ export default async function GetBehavior(req: Request) {
   }
 
   try {
-    const prefix = `wowbehave:behavior:${name}:${realm}:`;
+    const prefix = `wowbehave:rejoin:${name}:${realm}:`;
     const keys = await redis.keys(`${prefix}*`);
 
     if (!keys || keys.length === 0) {

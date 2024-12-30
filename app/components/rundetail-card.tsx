@@ -26,12 +26,47 @@ const saveBehaviorToUpstash = async (slug: string, behavior: string) => {
   }
 };
 
+const saveRejoinRating = async (slug: string, rating: boolean) => {
+  const payload = { slug, rating: rating.toString() };
+
+  try {
+    const response = await fetch("/api/saveRejoinRating", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to save rejoin rating");
+    }
+
+    console.log("Rejoin Rating saved successfully");
+  } catch (error) {
+    console.error("Error in saveRejoinRating:", error);
+  }
+};
+
 export const RunDetailCard: React.FC<CardProps> = ({ name, realm, slug }) => {
   const [selectedBehavior, setSelectedBehavior] = useState<string | null>(null);
+  const [showRejoinQuestion, setShowRejoinQuestion] = useState(false);
+  const [selectedRejoinRating, setSelectedRejoinRating] = useState<boolean | null>(null);
+  const [showThankYouMessage, setShowThankYouMessage] = useState(false);
 
   const handleButtonClick = (behavior: string) => {
     saveBehaviorToUpstash(slug, behavior);
-    setSelectedBehavior(behavior); // Update state with the selected behavior
+    setSelectedBehavior(behavior);
+    setShowRejoinQuestion(true);
+    setShowThankYouMessage(false); // Clear the "Thank you" message when a new behavior is selected
+    setSelectedRejoinRating(null); // Reset the rejoin rating when a new behavior is selected
+  };
+
+  const handleRejoinRating = (rating: boolean) => {
+    saveRejoinRating(slug, rating);
+    setSelectedRejoinRating(rating);
+    setShowThankYouMessage(true); // Show the "Thank you" message only after submitting rating
+    setShowRejoinQuestion(false); // Optionally hide the rejoin question after rating is submitted
   };
 
   return (
@@ -76,6 +111,35 @@ export const RunDetailCard: React.FC<CardProps> = ({ name, realm, slug }) => {
           <span className="font-semibold">
             Nice! <span className="text-gray-900">{selectedBehavior}</span> was recorded for <span className="text-gray-900">{name}</span>.
           </span>
+        </div>
+      )}
+      {showRejoinQuestion && (
+        <div className="mt-4 text-center">
+          <p className="text-lg font-semibold text-gray-800">Would you group with them again?</p>
+          <div className="flex justify-center mt-2 gap-4">
+            <button
+              onClick={() => handleRejoinRating(true)}
+              disabled={selectedRejoinRating !== null}
+              className={`px-4 py-2 text-base font-medium ${selectedRejoinRating === true ? "bg-green-500 text-white" : "text-black bg-white"
+                } border border-gray-300 rounded-lg hover:bg-gray-100 focus:outline-none`}
+            >
+              Yes
+            </button>
+            <button
+              onClick={() => handleRejoinRating(false)}
+              disabled={selectedRejoinRating !== null}
+              className={`px-4 py-2 text-base font-medium ${selectedRejoinRating === false ? "bg-red-500 text-white" : "text-black bg-white"
+                } border border-gray-300 rounded-lg hover:bg-gray-100 focus:outline-none`}
+            >
+              No
+            </button>
+          </div>
+        </div>
+      )}
+      {showThankYouMessage && (
+        <div className="mt-4 text-center text-lg text-green-700 flex items-center justify-center gap-2">
+          <CheckCircle className="w-6 h-6 text-green-500" />
+          <span className="font-semibold">Thank you! Rejoin Rating submitted.</span>
         </div>
       )}
     </div>

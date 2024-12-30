@@ -6,7 +6,7 @@ export const config = {
   runtime: "edge",
 };
 
-export default async function SaveBehavior(req: NextRequest): Promise<NextResponse> {
+export default async function SaveRejoinRating(req: NextRequest): Promise<NextResponse> {
   if (req.method !== "POST") {
     return new NextResponse("Use POST", { status: 405 });
   }
@@ -15,14 +15,14 @@ export default async function SaveBehavior(req: NextRequest): Promise<NextRespon
   }
 
   const body = await req.json();
-  const { slug, behavior } = body;
+  const { slug, rating } = body;
 
-  if (!slug || !behavior) {
-    return new NextResponse("Slug or behavior missing", { status: 400 });
+  if (!slug || !rating) {
+    return new NextResponse("Slug or rejoin rating missing", { status: 400 });
   }
 
-  // Increment behavior-specific counters
-  await redis.incr([`wowbehave:behavior`, slug, behavior].join(":"));
+  // Increment rejoinRating-specific counters
+  await redis.incr([`wowbehave:rejoin`, slug, rating].join(":"));
 
-  return new NextResponse("Behavior saved successfully", { status: 200 });
+  return new NextResponse("Rejoin Rating saved successfully", { status: 200 });
 }

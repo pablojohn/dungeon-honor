@@ -2,9 +2,16 @@
 
 import { useState } from "react";
 import BehaviorGraph from "./behavior-graph";
+import RejoinRatingGraph from "./rejoin-rating-graph"; // Import the new component
 
 interface BehaviorData {
   data: { key: string }[]; // Adjust this according to your actual API response structure
+}
+
+interface RejoinData {
+  success: boolean;
+  data: { key: string }[];
+  message: string;
 }
 
 export default function ReportCard() {
@@ -14,6 +21,7 @@ export default function ReportCard() {
   const [submittedRealm, setSubmittedRealm] = useState(""); // Store realm after submission
   const [error, setError] = useState({ name: false, realm: false });
   const [reportData, setReportData] = useState<BehaviorData | null>(null); // State to hold the API response
+  const [rejoinData, setRejoinData] = useState<RejoinData | null>(null); // State for rejoin data
   const [loading, setLoading] = useState(false); // State to manage loading state
   const [submitted, setSubmitted] = useState(false); // Track if form has been submitted
 
@@ -40,7 +48,8 @@ export default function ReportCard() {
     setSubmittedRealm(realm);
 
     try {
-      const response = await fetch(
+      // Fetch behavior data
+      const behaviorResponse = await fetch(
         `/api/getBehavior?name=${encodeURIComponent(name)}&realm=${encodeURIComponent(realm)}`,
         {
           method: "GET",
@@ -50,27 +59,47 @@ export default function ReportCard() {
         }
       );
 
-      if (response.ok) {
-        const data = await response.json();
-        setReportData(data); // Set the response data into state
-        setName("");
-        setRealm("");
-        setError({ name: false, realm: false }); // Clear errors
+      if (behaviorResponse.ok) {
+        const data = await behaviorResponse.json();
+        setReportData(data); // Set the behavior data into state
       } else {
-        // If API returns a bad response (e.g., 404), reset the report data
         setReportData(null);
       }
+
+      // Fetch rejoin rating data
+      const rejoinResponse = await fetch(
+        `/api/getRejoinRating?name=${encodeURIComponent(name)}&realm=${encodeURIComponent(realm)}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (rejoinResponse.ok) {
+        const rejoinData = await rejoinResponse.json();
+        console.log("Rejoin rating data:", rejoinData); // Log the response data
+        setRejoinData(rejoinData); // Set the rejoin rating data into state
+      } else {
+        setRejoinData(null);
+      }
+
+      setName("");
+      setRealm("");
+      setError({ name: false, realm: false }); // Clear errors
     } catch (error) {
       console.error("Error:", error);
       setReportData(null); // Reset report data on error
+      setRejoinData(null); // Reset rejoin data on error
     } finally {
       setLoading(false); // Reset loading state after the API call
     }
   };
 
-  // Function to process data and aggregate the counts for each behavior type
-  const processGraphData = () => {
-    if (!reportData?.data) return [];  // reportData could be null, so we need to check both
+  // Function to process behavior data and return chart-friendly data
+  const processBehaviorData = () => {
+    if (!reportData?.data) return [];
 
     const labels = reportData.data.map(item => {
       const behaviorName = item.key.split(':').pop()?.trim();
@@ -97,7 +126,7 @@ export default function ReportCard() {
     }));
   };
 
-  const chartData = processGraphData();
+  const behaviorChartData = processBehaviorData();
 
   return (
     <div className="flex justify-center items-start bg-gray-100 pt-20 pb-10 w-full">
@@ -163,13 +192,21 @@ export default function ReportCard() {
               </p>
             </div>
           ) : (
-            reportData && <BehaviorGraph
-              name={submittedName} // Pass the submitted name
-              realm={submittedRealm} // Pass the submitted realm
-              chartData={chartData}
-            />
+            reportData && (
+              <>
+                {/* Title with name, realm, and season */}
+                <h2 className="text-2xl text-center font-semibold mt-6">
+                  Report for {submittedName} in {submittedRealm} for TWW Season 1
+                </h2>
+                <BehaviorGraph chartData={behaviorChartData} /> {/* No need to pass name and realm */}
+              </>
+            )
           )}
 
+          {/* Display the Rejoin Rating Chart */}
+          {submitted && !loading && rejoinData && (
+            <RejoinRatingGraph rejoinData={rejoinData} />
+          )}
         </div>
       </div>
     </div>
