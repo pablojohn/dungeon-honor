@@ -115,7 +115,7 @@ export default function ReportCard() {
                 } text-center`}
               placeholder="Enter your name"
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => setName(e.target.value.toLowerCase())}
             />
             {error.name && (
               <p className="mt-1 text-sm text-red-500 text-center">
@@ -131,7 +131,7 @@ export default function ReportCard() {
                 } text-center`}
               placeholder="Enter your realm"
               value={realm}
-              onChange={(e) => setRealm(e.target.value)}
+              onChange={(e) => setRealm(e.target.value.toLowerCase())}
             />
             {error.realm && (
               <p className="mt-1 text-sm text-red-500 text-center">
