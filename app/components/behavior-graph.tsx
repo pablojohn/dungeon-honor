@@ -1,5 +1,3 @@
-// components/BehaviorGraph.tsx
-
 import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
 interface BehaviorGraphProps {
@@ -11,10 +9,12 @@ interface BehaviorGraphProps {
 const BehaviorGraph = ({ name, realm, chartData }: BehaviorGraphProps) => {
   const getBarColor = (name: string) => {
     switch (name) {
+      case "Uses Defensives":
+        return "#007bff"; // Blue
       case "Good Comms":
-        return "#28a745"; // Green
-      case "Giga Heals":
         return "#ffc107"; // Yellow
+      case "Giga Heals":
+        return "#28a745"; // Green
       case "Big Dam":
         return "#dc3545"; // Red
       default:
@@ -23,7 +23,7 @@ const BehaviorGraph = ({ name, realm, chartData }: BehaviorGraphProps) => {
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md">
+    <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-3xl mx-auto">
       <h2 className="text-2xl font-semibold">
         {name} - {realm}
       </h2>
@@ -34,7 +34,14 @@ const BehaviorGraph = ({ name, realm, chartData }: BehaviorGraphProps) => {
             <XAxis dataKey="name" />
             <YAxis />
             <Tooltip />
-            <Legend />
+            <Legend
+              payload={chartData.map((data) => ({
+                id: data.name,
+                value: data.name,
+                type: "line", // Adjust the shape of legend items if needed
+                color: getBarColor(data.name),
+              }))}
+            />
             <Bar dataKey="value" radius={5}>
               {chartData.map((data, index) => (
                 <Cell key={`cell-${index}`} fill={getBarColor(data.name)} />
