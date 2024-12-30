@@ -38,8 +38,13 @@ export default async function GetBehavior(req: Request) {
       );
     }
 
-    const records = await Promise.all(keys.map((key) => redis.get(key)));
-    const result = keys.map((key, index) => ({ key, value: records[index] }));
+    // Transform each key to remove the first three parts, split by ":"
+    const result = keys.map((key) => {
+      const parts = key.split(":");
+      // Join the remaining parts starting from the fourth element (index 3)
+      const newKey = parts.slice(3).join(":");
+      return { key: newKey };
+    });
 
     return new Response(
       JSON.stringify({
