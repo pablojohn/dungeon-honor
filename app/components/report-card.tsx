@@ -40,7 +40,6 @@ export default function ReportCard() {
       if (response.ok) {
         const data = await response.json();
         setReportData(data); // Set the response data into state
-        alert("Submitted successfully!");
         setName("");
         setRealm("");
         setError({ name: false, realm: false }); // Clear errors
@@ -97,7 +96,7 @@ export default function ReportCard() {
           </div>
           <button
             type="submit"
-            className="px-6 py-3 rounded-full bg-blue-500 text-white font-semibold shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="px-6 py-3 rounded-full bg-black text-white font-semibold shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             Submit
           </button>

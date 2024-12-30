@@ -25,7 +25,7 @@ export default async function GetBehavior(req: Request) {
   }
 
   try {
-    const prefix = `wowbehave:${name}-${realm}-`;
+    const prefix = `wowbehave:${name}:${realm}:`;
     const keys = await redis.keys(`${prefix}*`);
 
     if (!keys || keys.length === 0) {

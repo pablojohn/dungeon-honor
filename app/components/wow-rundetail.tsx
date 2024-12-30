@@ -56,7 +56,7 @@ export const WoWRunDetail: React.FC<WoWRunDetailProps> = ({ keystone_run_id, num
       </div>
       {characters &&
         characters.map((character) => {
-          const slug = `${character.name.replace(' ', '-').toLowerCase()}-${character.realm.replace(' ', '-').toLowerCase()}-${keystone_run_id}-${userId}`;
+          const slug = `${character.name.replace(' ', '-').toLowerCase()}:${character.realm.replace(' ', '-').toLowerCase()}:${keystone_run_id}:${userId}`;
           return (
             <div key={character.id}>
               <RunDetailCard name={character.name} realm={character.realm} slug={slug} />
