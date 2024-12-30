@@ -150,10 +150,18 @@ export default function ReportCard() {
         <div className="mt-6 w-full">
           {loading && <p className="text-center">Loading report card...</p>}
           {submitted && !loading && !reportData && (
-            <p className="text-center text-gray-600">No report card data found.</p>
+            <div className="flex justify-center mt-4 w-full">
+              <p className="text-center text-xl font-semibold text-gray-600">
+                No report card data found.
+              </p>
+            </div>
           )}
           {submitted && !loading && reportData && reportData.data.length === 0 ? (
-            <p className="text-center text-gray-600">No report card data found.</p>
+            <div className="flex justify-center mt-4 w-full">
+              <p className="text-center text-xl font-semibold text-gray-600">
+                No report card data found.
+              </p>
+            </div>
           ) : (
             reportData && <BehaviorGraph
               name={submittedName} // Pass the submitted name
@@ -161,6 +169,7 @@ export default function ReportCard() {
               chartData={chartData}
             />
           )}
+
         </div>
       </div>
     </div>
