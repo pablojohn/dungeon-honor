@@ -3,13 +3,17 @@
 import { useState } from "react";
 import BehaviorGraph from "./behavior-graph";
 
+interface BehaviorData {
+  data: { key: string }[]; // Adjust this according to your actual API response structure
+}
+
 export default function ReportCard() {
   const [name, setName] = useState("");
   const [realm, setRealm] = useState("");
   const [submittedName, setSubmittedName] = useState(""); // Store name after submission
   const [submittedRealm, setSubmittedRealm] = useState(""); // Store realm after submission
   const [error, setError] = useState({ name: false, realm: false });
-  const [reportData, setReportData] = useState(null); // State to hold the API response
+  const [reportData, setReportData] = useState<BehaviorData | null>(null); // State to hold the API response
   const [loading, setLoading] = useState(false); // State to manage loading state
   const [submitted, setSubmitted] = useState(false); // Track if form has been submitted
 
@@ -65,20 +69,25 @@ export default function ReportCard() {
 
   // Function to process data and aggregate the counts for each behavior type
   const processGraphData = () => {
-    if (!reportData?.data) return [];
+    if (!reportData?.data) return [];  // reportData could be null, so we need to check both
 
     const labels = reportData.data.map(item => {
       const behaviorName = item.key.split(':').pop()?.trim();
       return behaviorName || '';  // Fallback if the split doesn't produce a valid name
     });
 
+    // Define the type for the labelCount object
+    type LabelCount = {
+      [key: string]: number;
+    };
+
     // Count occurrences of each label
-    const labelCount = labels.reduce((acc, label) => {
+    const labelCount = labels.reduce((acc: LabelCount, label) => {
       if (label) {  // Only count valid labels
         acc[label] = (acc[label] || 0) + 1;
       }
       return acc;
-    }, {});
+    }, {} as LabelCount);
 
     // Convert label counts to a format suitable for recharts
     return Object.keys(labelCount).map(label => ({
@@ -138,7 +147,7 @@ export default function ReportCard() {
         </form>
 
         <div className="mt-6 w-full">
-          {loading && <p className="text-center text-blue-500">Loading...</p>}
+          {loading && <p className="text-center">Loading report card...</p>}
           {submitted && !loading && reportData && (
             <BehaviorGraph
               name={submittedName} // Pass the submitted name
