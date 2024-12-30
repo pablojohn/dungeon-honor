@@ -7,7 +7,14 @@ declare module "next-auth" {
   }
 }
 
-const issuer = process.env.BATTLENET_ISSUER || "https://oauth.battle.net";
+const issuer = (process.env.BATTLENET_ISSUER || "https://us.battle.net/oauth") as 
+  | "https://us.battle.net/oauth"
+  | "https://oauth.battle.net"
+  | "https://oauth.battlenet.com.cn"
+  | "https://www.battlenet.com.cn/oauth"
+  | "https://eu.battle.net/oauth"
+  | "https://kr.battle.net/oauth"
+  | "https://tw.battle.net/oauth";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   debug: true,
@@ -15,7 +22,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     BattleNet({
       clientId: process.env.BATTLENET_CLIENT_ID,
       clientSecret: process.env.BATTLENET_CLIENT_SECRET,
-      issuer: issuer as "https://oauth.battle.net" | "https://oauth.battlenet.com.cn" | "https://www.battlenet.com.cn/oauth" | "https://us.battle.net/oauth" | "https://eu.battle.net/oauth" | "https://kr.battle.net/oauth" | "https://tw.battle.net/oauth",
+      issuer: issuer,
       authorization: { params: { scope: "openid wow.profile" } }
     })
   ],
