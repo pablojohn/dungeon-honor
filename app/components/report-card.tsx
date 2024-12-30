@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react";
+import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
 export default function ReportCard() {
   const [name, setName] = useState("");
@@ -51,6 +52,51 @@ export default function ReportCard() {
       alert("An unexpected error occurred.");
     } finally {
       setLoading(false); // Reset loading state after the API call
+    }
+  };
+
+  // Function to process data and aggregate the counts for each behavior type
+
+  const processGraphData = () => {
+    if (!reportData?.data) return [];
+
+    // Extract behavior names and ensure there's no accidental whitespace or variation
+    const labels = reportData.data.map(item => {
+      const behaviorName = item.key.split(':').pop()?.trim(); // Ensure any extra spaces are removed
+      return behaviorName || '';  // Fallback if the split doesn't produce a valid name
+    });
+
+    console.log('Extracted Behavior Names:', labels); // Debugging: Check the behavior names
+
+    // Count occurrences of each label
+    const labelCount = labels.reduce((acc, label) => {
+      if (label) {  // Only count valid labels
+        acc[label] = (acc[label] || 0) + 1;
+      }
+      return acc;
+    }, {});
+
+    console.log('Behavior Counts:', labelCount); // Debugging: Check the counts of each behavior type
+
+    // Convert label counts to a format suitable for recharts
+    return Object.keys(labelCount).map(label => ({
+      name: label,
+      value: labelCount[label],  // Number of occurrences of each behavior
+    }));
+  };
+
+  const chartData = processGraphData();
+
+  const getBarColor = (name: string) => {
+    switch (name) {
+      case "Good Comms":
+        return "#28a745"; // Green
+      case "Giga Heals":
+        return "#ffc107"; // Yellow
+      case "Big Dam":
+        return "#dc3545"; // Red
+      default:
+        return "#8884d8"; // Default color (optional)
     }
   };
 
@@ -110,10 +156,24 @@ export default function ReportCard() {
           {/* Displaying API response data */}
           {reportData && !loading && (
             <div className="bg-white p-6 rounded-lg shadow-md">
-              <h2 className="text-2xl font-semibold">Report</h2>
-              <pre className="mt-4 text-sm text-gray-700">
-                {JSON.stringify(reportData, null, 2)}
-              </pre>
+              <h2 className="text-2xl font-semibold">PUT CHAR NAME HERE</h2>
+              {/* Display the graph */}
+              <div className="mt-6">
+                <ResponsiveContainer width="100%" height={400}>
+                  <BarChart data={chartData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="value" radius={5}>
+                      {chartData.map((data, index) => (
+                        <Cell key={`cell-${index}`} fill={getBarColor(data.name)} />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
             </div>
           )}
         </div>
