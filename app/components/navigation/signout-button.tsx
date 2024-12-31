@@ -1,5 +1,5 @@
 import { signOut } from "auth";
-import { Button } from "./button"
+import { Button } from "../shared/button"
 
 export default function SignOutButton(props: React.ComponentPropsWithRef<typeof Button>) {
   return (

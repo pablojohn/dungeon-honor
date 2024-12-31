@@ -1,4 +1,4 @@
-import CustomLink from "./custom-link";
+import CustomLink from "./shared/custom-link";
 import { Coffee } from "lucide-react";
 
 export default function Footer() {

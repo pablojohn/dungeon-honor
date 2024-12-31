@@ -1,5 +1,5 @@
 import { auth } from "auth";
-import WoWData from "./components/wow-data";
+import WoWData from "./components/home/wow-data";
 
 export default async function Home() {
   const session = await auth()

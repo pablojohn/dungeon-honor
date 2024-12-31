@@ -1,5 +1,5 @@
-import MainNav from "./main-nav";
-import UserButton from "./user-button";
+import MainNav from "./navigation/main-nav";
+import UserButton from "./navigation/user-button";
 
 export default function Header() {
     return (

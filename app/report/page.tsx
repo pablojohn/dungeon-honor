@@ -1,4 +1,4 @@
-import ReportCard from "../components/report-card"
+import ReportCard from "../components/report/report-card"
 
 export default async function Report() {
   return (
