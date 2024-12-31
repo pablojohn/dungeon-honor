@@ -61,6 +61,7 @@ export default function ReportCard() {
 
       if (behaviorResponse.ok) {
         const data = await behaviorResponse.json();
+        console.log("Behavior data:", data); // Log the response data
         setReportData(data); // Set the behavior data into state
       } else {
         setReportData(null);
@@ -101,30 +102,31 @@ export default function ReportCard() {
   const processBehaviorData = () => {
     if (!reportData?.data) return [];
 
-    const labels = reportData.data.map(item => {
-      const behaviorName = item.key.split(':').pop()?.trim();
-      return behaviorName || '';  // Fallback if the split doesn't produce a valid name
+    // Step 1: Extract behavior names and values from the data
+    const labelsAndValues = reportData.data.map(item => {
+      const segments = item.key.split(':');
+      const behaviorName = segments[segments.length - 2]; // Name before the last segment
+      const value = parseInt(segments[segments.length - 1], 10); // Last segment is the value
+
+      return { behaviorName, value };
     });
 
-    // Define the type for the labelCount object
-    type LabelCount = {
-      [key: string]: number;
-    };
+    // Step 2: Sum the values for each behavior
+    const labelSum: { [key: string]: number } = {};
 
-    // Count occurrences of each label
-    const labelCount = labels.reduce((acc: LabelCount, label) => {
-      if (label) {  // Only count valid labels
-        acc[label] = (acc[label] || 0) + 1;
+    labelsAndValues.forEach(({ behaviorName, value }) => {
+      if (behaviorName) {
+        labelSum[behaviorName] = (labelSum[behaviorName] || 0) + value;
       }
-      return acc;
-    }, {} as LabelCount);
+    });
 
-    // Convert label counts to a format suitable for recharts
-    return Object.keys(labelCount).map(label => ({
-      name: label,
-      value: labelCount[label],  // Number of occurrences of each behavior
+    // Step 3: Convert the sum into a format suitable for the chart
+    return Object.keys(labelSum).map(behaviorName => ({
+      name: behaviorName,
+      value: labelSum[behaviorName],  // Sum of values for each behavior
     }));
   };
+
 
   const behaviorChartData = processBehaviorData();
 

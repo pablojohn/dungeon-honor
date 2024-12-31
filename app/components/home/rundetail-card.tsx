@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Sword, ShieldPlus, MessageSquareMore, HeartPulse, CheckCircle } from "lucide-react";
+import DualButton from "../shared/dual-button";
 
 interface CardProps {
   name: string;
@@ -49,24 +50,52 @@ const saveRejoinRating = async (slug: string, rating: boolean) => {
 };
 
 export const RunDetailCard: React.FC<CardProps> = ({ name, realm, slug }) => {
-  const [selectedBehavior, setSelectedBehavior] = useState<string | null>(null);
+  const [selectedBehaviors, setSelectedBehaviors] = useState<string[]>([]);
   const [showRejoinQuestion, setShowRejoinQuestion] = useState(false);
   const [selectedRejoinRating, setSelectedRejoinRating] = useState<boolean | null>(null);
   const [showThankYouMessage, setShowThankYouMessage] = useState(false);
-
-  const handleButtonClick = (behavior: string) => {
-    saveBehaviorToUpstash(slug, behavior);
-    setSelectedBehavior(behavior);
-    setShowRejoinQuestion(true);
-    setShowThankYouMessage(false); // Clear the "Thank you" message when a new behavior is selected
-    setSelectedRejoinRating(null); // Reset the rejoin rating when a new behavior is selected
-  };
 
   const handleRejoinRating = (rating: boolean) => {
     saveRejoinRating(slug, rating);
     setSelectedRejoinRating(rating);
     setShowThankYouMessage(true); // Show the "Thank you" message only after submitting rating
     setShowRejoinQuestion(false); // Optionally hide the rejoin question after rating is submitted
+  };
+
+  // Handle adding behavior to selectedBehaviors
+  const handleBehaviorClick = (behavior: string) => {
+    // Add behavior to the list without removing anything
+    if (!selectedBehaviors.includes(behavior)) {
+      setSelectedBehaviors([...selectedBehaviors, behavior]);
+      saveBehaviorToUpstash(slug, behavior);
+    }
+    setShowRejoinQuestion(true);
+    setShowThankYouMessage(false);
+    setSelectedRejoinRating(null);
+  };
+
+  // Function to replace :1 with +1 and :-1 with -1, and apply color formatting
+  const formatBehaviors = (behaviors: string[]) => {
+    return behaviors.map((behavior, index) => {
+      // Replace :1 with +1 and :-1 with -1
+      const formattedBehavior = behavior.replace(/:1/g, ' +1').replace(/:-1/g, ' -1');
+
+      // Apply darker color formatting for +1 and -1
+      if (formattedBehavior.includes('+1')) {
+        return (
+          <span key={index} className="text-green-700 font-semibold">
+            {formattedBehavior}
+          </span>
+        );
+      } else if (formattedBehavior.includes('-1')) {
+        return (
+          <span key={index} className="text-red-700 font-semibold">
+            {formattedBehavior}
+          </span>
+        );
+      }
+      return formattedBehavior; // For other behaviors without +1 or -1
+    });
   };
 
   return (
@@ -76,40 +105,25 @@ export const RunDetailCard: React.FC<CardProps> = ({ name, realm, slug }) => {
         <p className="text-sm text-gray-600">{realm}</p>
       </div>
       <div className="flex flex-wrap justify-center mt-4 gap-4">
-        <button
-          onClick={() => handleButtonClick("Big Dam")}
-          className="flex items-center px-4 py-2 text-base font-medium text-white bg-red-500 rounded-lg hover:bg-red-600 focus:outline-none"
-        >
-          <Sword className="w-5 h-5 mr-2" />
-          Big Dam
-        </button>
-        <button
-          onClick={() => handleButtonClick("Uses Defensives")}
-          className="flex items-center px-4 py-2 text-base font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none"
-        >
-          <ShieldPlus className="w-5 h-5 mr-2" />
-          Uses Defensives
-        </button>
-        <button
-          onClick={() => handleButtonClick("Good Comms")}
-          className="flex items-center px-4 py-2 text-base font-medium text-white bg-yellow-500 rounded-lg hover:bg-yellow-600 focus:outline-none"
-        >
-          <MessageSquareMore className="w-5 h-5 mr-2" />
-          Good Comms
-        </button>
-        <button
-          onClick={() => handleButtonClick("Giga Heals")}
-          className="flex items-center px-4 py-2 text-base font-medium text-white bg-green-500 rounded-lg hover:bg-green-600 focus:outline-none"
-        >
-          <HeartPulse className="w-5 h-5 mr-2" />
-          Giga Heals
-        </button>
+        {/* Use DualButton with specific behavior */}
+        <DualButton title={"Big Dam"} icon={<Sword className="w-5 h-5 mr-2" />} color="red" onPlusClick={() => handleBehaviorClick("Big Dam:1")} onMinusClick={() => handleBehaviorClick("Big Dam:-1")} />
+        <DualButton title="Uses Defensives" icon={<ShieldPlus className="w-5 h-5 mr-2" />} color="blue" onPlusClick={() => handleBehaviorClick("Uses Defensives:1")} onMinusClick={() => handleBehaviorClick("Uses Defensives:-1")} />
+        <DualButton title="Good Comms" icon={<MessageSquareMore className="w-5 h-5 mr-2" />} color="yellow" onPlusClick={() => handleBehaviorClick("Good Comms:1")} onMinusClick={() => handleBehaviorClick("Good Comms:-1")} />
+        <DualButton title="Giga Heals" icon={<HeartPulse className="w-5 h-5 mr-2" />} color="green" onPlusClick={() => handleBehaviorClick("Giga Heals:1")} onMinusClick={() => handleBehaviorClick("Giga Heals:-1")} />
       </div>
-      {selectedBehavior && (
-        <div className="mt-4 text-center text-lg text-green-700 flex items-center justify-center gap-2">
-          <CheckCircle className="w-6 h-6 text-green-500" />
+      {selectedBehaviors.length > 0 && (
+        <div className="mt-4 text-center text-lg text-gray-900 flex items-center justify-center gap-2">
           <span className="font-semibold">
-            Nice! <span className="text-gray-900">{selectedBehavior}</span> was recorded for <span className="text-gray-900">{name}</span>.
+            <span className="text-gray-900">
+              {/* Format and display the selected behaviors with colors */}
+              {formatBehaviors(selectedBehaviors).map((behavior, index) => (
+                <React.Fragment key={index}>
+                  {index > 0 && ', '}
+                  {behavior}
+                </React.Fragment>
+              ))}
+            </span>
+            {selectedBehaviors.length > 1 ? " were" : " was"} recorded!
           </span>
         </div>
       )}
