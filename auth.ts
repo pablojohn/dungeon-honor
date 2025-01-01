@@ -7,7 +7,7 @@ declare module "next-auth" {
   }
 }
 
-const issuer = (process.env.BATTLENET_ISSUER || "https://us.battle.net/oauth") as 
+const issuer = (process.env.BATTLENET_ISSUER || "https://us.battle.net/oauth") as
   | "https://us.battle.net/oauth"
   | "https://oauth.battle.net"
   | "https://oauth.battlenet.com.cn"
@@ -23,7 +23,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       clientId: process.env.BATTLENET_CLIENT_ID,
       clientSecret: process.env.BATTLENET_CLIENT_SECRET,
       issuer: issuer,
-      authorization: { params: { scope: "openid wow.profile", state: "wow-behave-dev" } }
+      authorization: { params: { scope: "openid wow.profile", state: "dungeon-honor" } }
     })
   ],
   basePath: "/auth",
