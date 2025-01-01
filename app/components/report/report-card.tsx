@@ -3,7 +3,8 @@
 import { useState } from "react";
 import BehaviorGraph from "./behavior-graph";
 import RejoinRatingGraph from "./rejoin-rating-graph";
-import BehaviorScore from "./behavior-score";
+import HonorScore from "./honor-score";
+import Link from "next/link"; // Import Link from Next.js
 
 interface BehaviorData {
   data: { key: string }[];
@@ -158,9 +159,18 @@ export default function ReportCard() {
             reportData && (
               <>
                 <h2 className="text-2xl text-center font-semibold mt-6">
-                  Report for {submittedName} in {submittedRealm} for TWW Season 1
+                  Report for{" "}
+                  <Link
+                    href={`https://raider.io/characters/us/${submittedRealm.toLowerCase()}/${submittedName.toLowerCase()}`}
+                    className="text-center text-black underline font-semibold hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    target="_blank" // Add this line
+                    rel="noopener noreferrer"
+                  >
+                    {submittedName.charAt(0).toUpperCase() + submittedName.slice(1)} - {submittedRealm.charAt(0).toUpperCase() + submittedRealm.slice(1)}
+                  </Link>
+                  {" "}for TWW Season 1
                 </h2>
-                <BehaviorScore score={calculateTeammateScore(reportData, rejoinData!)} />
+                <HonorScore score={calculateTeammateScore(reportData, rejoinData!)} />
                 <div className="mt-8">
                   <BehaviorGraph chartData={behaviorChartData} />
                 </div>

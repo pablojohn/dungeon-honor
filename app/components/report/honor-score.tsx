@@ -1,10 +1,10 @@
 import { Apple } from "lucide-react";
 
-interface BehaviorScoreProps {
+interface HonorScoreProps {
   score: number;
 }
 
-const BehaviorScore: React.FC<BehaviorScoreProps> = ({ score }) => {
+const HonorScore: React.FC<HonorScoreProps> = ({ score }) => {
   const renderAppleRating = (score: number) => {
     const apples = Math.round((score / 100) * 5); // Convert percentage to a 1-5 rating
     return (
@@ -30,4 +30,4 @@ const BehaviorScore: React.FC<BehaviorScoreProps> = ({ score }) => {
   );
 };
 
-export default BehaviorScore;
+export default HonorScore;
