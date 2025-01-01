@@ -6,7 +6,7 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-3xl font-bold">WoW Behave</h1>
+      <h1 className="text-3xl font-bold">Dungeon Honor</h1>
       <div>
         A place used to rate teammate behavior in m+ dungeons.
       </div>

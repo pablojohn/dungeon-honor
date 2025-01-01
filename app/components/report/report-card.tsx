@@ -114,7 +114,7 @@ export default function ReportCard() {
     <div className="flex justify-center items-start bg-gray-100 pt-20 pb-10 w-full">
       <div className="flex flex-col items-center space-y-6 w-full max-w-xl">
         <form onSubmit={handleSubmit} className="flex flex-col items-center space-y-6 w-full">
-          <h1 className="text-3xl font-semibold text-center">Report Card</h1>
+          <h1 className="text-3xl font-semibold text-center">Search for a character</h1>
           <div className="relative w-full max-w-sm">
             <input
               type="text"

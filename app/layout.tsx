@@ -8,7 +8,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "WoW Behave",
+  title: "Dungeon Honor",
   description: "Site to track M+ player behavior",
   icons: {
     shortcut: "/favicon.png"

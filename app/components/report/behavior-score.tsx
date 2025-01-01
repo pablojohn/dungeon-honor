@@ -23,7 +23,7 @@ const BehaviorScore: React.FC<BehaviorScoreProps> = ({ score }) => {
 
   return (
     <div className="text-center mt-6 border-2 border-gray-300 rounded-lg p-4 shadow-sm">
-      <h2 className="text-3xl font-bold text-gray-800 mb-3">Behavior Score</h2>
+      <h2 className="text-3xl font-bold text-gray-800 mb-3">Honor Score</h2>
       <p className="text-green-600 text-4xl font-semibold">{score.toFixed(2)}%</p>
       {renderAppleRating(score)}
     </div>
