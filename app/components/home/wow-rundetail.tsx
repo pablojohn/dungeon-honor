@@ -14,6 +14,7 @@ interface Character {
   id: number;
   name: string;
   realm: string;
+  role: string;
 }
 
 export const WoWRunDetail: React.FC<WoWRunDetailProps> = ({ keystone_run_id, num_chests, clear_time_ms, time_remaining_ms, characters, userId }) => {
@@ -59,7 +60,7 @@ export const WoWRunDetail: React.FC<WoWRunDetailProps> = ({ keystone_run_id, num
           const slug = `${character.name.replace(' ', '-').toLowerCase()}:${character.realm.replace(' ', '-').toLowerCase()}:${keystone_run_id}:${userId}`;
           return (
             <div key={character.id}>
-              <RunDetailCard name={character.name} realm={character.realm} slug={slug} />
+              <RunDetailCard name={character.name} realm={character.realm} role={character.role} slug={slug} />
             </div>
           );
         })}

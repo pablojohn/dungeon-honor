@@ -11,6 +11,8 @@ interface Dungeon {
 interface WoWDungeonProps {
   dungeons: Dungeon[];
   userId: string;
+  characterName: string;
+  characterRealm: string;
 }
 
 interface RunDetailData {
@@ -25,9 +27,10 @@ interface Character {
   id: number;
   name: string;
   realm: string;
+  role: string;
 }
 
-export const WoWDungeon: React.FC<WoWDungeonProps> = ({ dungeons, userId }) => {
+export const WoWDungeon: React.FC<WoWDungeonProps> = ({ dungeons, userId, characterName, characterRealm }) => {
   const [activeDungeonId, setActiveDungeonId] = useState<number | null>(null);
   const [dungeonRunDetailData, setDungeonRunDetailData] = useState<RunDetailData | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -50,7 +53,7 @@ export const WoWDungeon: React.FC<WoWDungeonProps> = ({ dungeons, userId }) => {
         setError(null);
 
         try {
-          const response = await fetch(`/api/getDungeonRunDetails?keystone_run_id=${keystone_run_id}`);
+          const response = await fetch(`/api/getDungeonRunDetails?keystone_run_id=${keystone_run_id}&exclude_name=${characterName}&exclude_realm=${characterRealm}`);
 
           if (!response.ok) {
             throw new Error('Failed to fetch dungeon run details');
@@ -66,19 +69,17 @@ export const WoWDungeon: React.FC<WoWDungeonProps> = ({ dungeons, userId }) => {
       };
 
       fetchDungeonRunDetails();
-    } else {
-
     }
-  }, [activeDungeonId, activeDungeon]);
+  }, [activeDungeonId, activeDungeon, characterName, characterRealm]);
 
   return (
     <div className="flex flex-wrap gap-4">
       {dungeons && dungeons.map((dungeon) => (
         <div key={dungeon.keystone_run_id}
-             onClick={() => handleCardClick(dungeon.keystone_run_id)}
-             className={`rounded-md transition-all ${activeDungeonId === dungeon.keystone_run_id
-              ? "border-2 border-gray-900 bg-white shadow-md"
-              : "border border-gray-300 bg-white hover:shadow-sm"
+          onClick={() => handleCardClick(dungeon.keystone_run_id)}
+          className={`rounded-md transition-all ${activeDungeonId === dungeon.keystone_run_id
+            ? "border-2 border-gray-900 bg-white shadow-md"
+            : "border border-gray-300 bg-white hover:shadow-sm"
             } cursor-pointer`}>
           <DungeonCard
             name={dungeon.name}

@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Sword, ShieldPlus, MessageSquareMore, HeartPulse, CheckCircle } from "lucide-react";
+import { Sword, Shield, Heart, ShieldPlus, MessageSquareMore, HeartPulse, CheckCircle } from "lucide-react";
 import DualButton from "../shared/dual-button";
 
 interface CardProps {
   name: string;
   realm: string;
+  role: string;
   slug: string; // Unique identifier for the run
 }
 
@@ -49,7 +50,7 @@ const saveRejoinRating = async (slug: string, rating: boolean) => {
   }
 };
 
-export const RunDetailCard: React.FC<CardProps> = ({ name, realm, slug }) => {
+export const RunDetailCard: React.FC<CardProps> = ({ name, realm, role, slug }) => {
   const [selectedBehaviors, setSelectedBehaviors] = useState<string[]>([]);
   const [showRejoinQuestion, setShowRejoinQuestion] = useState(false);
   const [selectedRejoinRating, setSelectedRejoinRating] = useState<boolean | null>(null);
@@ -98,11 +99,31 @@ export const RunDetailCard: React.FC<CardProps> = ({ name, realm, slug }) => {
     });
   };
 
+  const renderRoleIcon = () => {
+    switch (role.toLowerCase()) {
+      case "dps":
+        return <Sword className="w-5 h-5 text-red-500 inline-block ml-2" />;
+      case "tank":
+        return <Shield className="w-5 h-5 text-blue-500 inline-block ml-2" />;
+      case "healer":
+        return <Heart className="w-5 h-5 text-green-500 inline-block ml-2" />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className="max-w-md mx-auto p-4 bg-white rounded-lg shadow-md border border-gray-200">
       <div className="text-center">
-        <h2 className="text-xl font-bold text-gray-800">{name}</h2>
-        <p className="text-sm text-gray-600">{realm}</p>
+        <h2 className="text-xl font-bold text-gray-800">
+          {name}
+        </h2>
+        <p className="text-sm text-gray-600">
+          {realm}
+        </p>
+        <p className="text-sm text-gray-600 flex items-center justify-center gap-2">
+          {renderRoleIcon()}
+        </p>
       </div>
       <div className="flex flex-wrap justify-center mt-4 gap-4">
         {/* Use DualButton with specific behavior */}

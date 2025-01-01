@@ -94,7 +94,7 @@ export const WoWCharacters: React.FC<WoWCharactersProps> = ({ characters, userId
               !error &&
               (dungeonData && dungeonData.dungeons.length > 0 ? (
                 <div>
-                  <WoWDungeon dungeons={dungeonData.dungeons} userId={userId} />
+                  <WoWDungeon dungeons={dungeonData.dungeons} userId={userId} characterName={activeCharacter.name} characterRealm={activeCharacter.realm} />
                 </div>
               ) : (
                 <pre className="whitespace-pre-wrap break-all px-4 py-6">
