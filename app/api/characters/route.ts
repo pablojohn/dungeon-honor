@@ -1,27 +1,36 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest) {
-  const accessToken = req.nextUrl.searchParams.get('access_token');
+  const authorizationHeader = req.headers.get('Authorization');
 
-  if (!accessToken) {
-    return NextResponse.json({ error: 'Access token is required' }, { status: 400 });
+  // Extract the token from the 'Authorization' header
+  if (!authorizationHeader || !authorizationHeader.startsWith('Bearer ')) {
+    return NextResponse.json({ error: 'Access token is required in Authorization header' }, { status: 400 });
   }
 
-  const response = await fetch(`https://us.api.blizzard.com/profile/user/wow?namespace=profile-us&locale=en_US`, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
+  const accessToken = authorizationHeader.split(' ')[1]; // Get the token after 'Bearer '
 
-  if (!response.ok) {
-    return NextResponse.json({ error: 'Failed to fetch characters from bnet' }, { status: 500 });
+  try {
+    const response = await fetch(
+      'https://us.api.blizzard.com/profile/user/wow?namespace=profile-us&locale=en_US',
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      return NextResponse.json({ error: 'Failed to fetch characters from Battle.net' }, { status: 500 });
+    }
+
+    const bnetData = await response.json();
+    const characters = getCharacterAndRealm(bnetData);
+
+    return NextResponse.json(characters);
+  } catch (error) {
+    return NextResponse.json({ error: 'An error occurred while processing the request' }, { status: 500 });
   }
-
-  const bnetData = await response.json();
-
-  const characters = getCharacterAndRealm(bnetData);
-
-  return NextResponse.json(characters);
 }
 
 function getCharacterAndRealm(data: BlizzardData): CharacterRealm[] {

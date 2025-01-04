@@ -1,8 +1,8 @@
-"use client"
+"use client";
 import { useEffect, useState } from 'react';
 import { WoWCharacters } from './wow-characters';
 
-export default function WoWData({ accessToken, userId }: { accessToken: string, userId: string }) {
+export default function WoWData({ accessToken, userId }: { accessToken: string; userId: string }) {
   interface Character {
     id: number;
     name: string;
@@ -18,14 +18,21 @@ export default function WoWData({ accessToken, userId }: { accessToken: string, 
   useEffect(() => {
     if (!accessToken) {
       setLoading(false);
-      setError(new Error("Not logged into Battle.net"));
+      setError(new Error('Not logged into Battle.net'));
       return;
     }
 
     async function fetchData() {
       try {
-        const bnetData = await fetch(`/api/characters?access_token=${accessToken}`);
-        setCharacters(await bnetData.json());
+        const response = await fetch('/api/characters', {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        if (!response.ok) {
+          throw new Error('Failed to fetch characters');
+        }
+        setCharacters(await response.json());
       } catch (err) {
         setError(err as Error);
       } finally {
@@ -45,9 +52,7 @@ export default function WoWData({ accessToken, userId }: { accessToken: string, 
       <div className="flex w-full flex-col gap-4 rounded-md bg-gray-100 p-4">
         <h2 className="text-xl font-bold">Characters</h2>
         <div className="flex flex-col rounded-md bg-neutral-100">
-          <pre className="whitespace-pre-wrap break-all px-4 py-6">
-            {error.message}
-          </pre>
+          <pre className="whitespace-pre-wrap break-all px-4 py-6">{error.message}</pre>
         </div>
       </div>
     );
@@ -56,7 +61,9 @@ export default function WoWData({ accessToken, userId }: { accessToken: string, 
   return (
     <div>
       <div className="flex w-full flex-col gap-4 rounded-md bg-gray-100 p-4">
-        <h2 className="text-xl font-bold">Characters - <span className="text-base font-normal">Select a character</span></h2>
+        <h2 className="text-xl font-bold">
+          Characters - <span className="text-base font-normal">Select a character</span>
+        </h2>
         <div className="flex flex-col rounded-md bg-neutral-100">
           <WoWCharacters characters={characters} userId={userId} />
         </div>
