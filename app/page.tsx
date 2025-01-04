@@ -16,7 +16,7 @@ export default async function Home() {
           <h2 className="text-xl font-bold">Error</h2>
           <div className="flex flex-col rounded-md bg-neutral-100">
             <pre className="whitespace-pre-wrap break-all px-4 py-6">
-              {"Your session has expired. Please log in again to access this feature."}
+              {"Your session has expired. Please log in again"}
             </pre>
           </div>
         </div>
