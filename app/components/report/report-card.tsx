@@ -89,8 +89,8 @@ export default function ReportCard() {
     setSubmittedRealm(realm);
 
     try {
-      const behaviorResponse = await fetch(`/api/getBehavior?name=${encodeURIComponent(name)}&realm=${encodeURIComponent(realm)}`);
-      const rejoinResponse = await fetch(`/api/getRejoinRating?name=${encodeURIComponent(name)}&realm=${encodeURIComponent(realm)}`);
+      const behaviorResponse = await fetch(`/api/behaviors?name=${encodeURIComponent(name)}&realm=${encodeURIComponent(realm)}`);
+      const rejoinResponse = await fetch(`/api/rejoinRatings?name=${encodeURIComponent(name)}&realm=${encodeURIComponent(realm)}`);
 
       if (behaviorResponse.ok && rejoinResponse.ok) {
         const behaviorData = await behaviorResponse.json();

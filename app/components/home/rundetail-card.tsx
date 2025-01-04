@@ -11,7 +11,7 @@ interface CardProps {
 
 const saveBehaviorToUpstash = async (slug: string, behavior: string) => {
   try {
-    const response = await fetch("/api/saveBehavior", {
+    const response = await fetch("/api/behaviors", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -32,7 +32,7 @@ const saveRejoinRating = async (slug: string, rating: boolean) => {
   const payload = { slug, rating: rating.toString() };
 
   try {
-    const response = await fetch("/api/saveRejoinRating", {
+    const response = await fetch("/api/rejoinRatings", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

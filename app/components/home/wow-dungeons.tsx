@@ -53,7 +53,7 @@ export const WoWDungeon: React.FC<WoWDungeonProps> = ({ dungeons, userId, charac
         setError(null);
 
         try {
-          const response = await fetch(`/api/getDungeonRunDetails?keystone_run_id=${keystone_run_id}&exclude_name=${characterName}&exclude_realm=${characterRealm}`);
+          const response = await fetch(`/api/dungeonRunDetails?keystone_run_id=${keystone_run_id}&exclude_name=${characterName}&exclude_realm=${characterRealm}`);
 
           if (!response.ok) {
             throw new Error('Failed to fetch dungeon run details');

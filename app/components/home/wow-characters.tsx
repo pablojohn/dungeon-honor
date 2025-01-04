@@ -42,7 +42,7 @@ export const WoWCharacters: React.FC<WoWCharactersProps> = ({ characters, userId
         setError(null);
 
         try {
-          const response = await fetch(`/api/getDungeons?name=${name}&realm=${realm}`);
+          const response = await fetch(`/api/dungeons?name=${name}&realm=${realm}`);
 
           if (!response.ok) {
             throw new Error("Failed to fetch dungeons");

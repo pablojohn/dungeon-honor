@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
     const characters = getCharacterAndRealm(bnetData);
 
     return NextResponse.json(characters);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'An error occurred while processing the request' }, { status: 500 });
   }
 }
