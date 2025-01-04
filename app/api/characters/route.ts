@@ -1,23 +1,27 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextRequest, NextResponse } from 'next/server';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const accessToken = req.query.access_token;
+export async function GET(req: NextRequest) {
+  const accessToken = req.nextUrl.searchParams.get('access_token');
+
+  if (!accessToken) {
+    return NextResponse.json({ error: 'Access token is required' }, { status: 400 });
+  }
 
   const response = await fetch(`https://us.api.blizzard.com/profile/user/wow?namespace=profile-us&locale=en_US`, {
     headers: {
       Authorization: `Bearer ${accessToken}`,
-    }
+    },
   });
 
   if (!response.ok) {
-    return res.status(500).json({ error: 'Failed to fetch characters from bnet' });
+    return NextResponse.json({ error: 'Failed to fetch characters from bnet' }, { status: 500 });
   }
 
   const bnetData = await response.json();
 
   const characters = getCharacterAndRealm(bnetData);
 
-  res.status(200).json(characters);
+  return NextResponse.json(characters);
 }
 
 function getCharacterAndRealm(data: BlizzardData): CharacterRealm[] {
@@ -29,7 +33,7 @@ function getCharacterAndRealm(data: BlizzardData): CharacterRealm[] {
         name: character.name,
         realm: character.realm.name,
         class: character.playable_class.name,
-        race: character.playable_race.name
+        race: character.playable_race.name,
       }))
   );
 }

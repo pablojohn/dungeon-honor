@@ -24,7 +24,7 @@ export default function WoWData({ accessToken, userId }: { accessToken: string, 
 
     async function fetchData() {
       try {
-        const bnetData = await fetch(`/api/getCharacters?access_token=${accessToken}`);
+        const bnetData = await fetch(`/api/characters?access_token=${accessToken}`);
         setCharacters(await bnetData.json());
       } catch (err) {
         setError(err as Error);
