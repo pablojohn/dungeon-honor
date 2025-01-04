@@ -4,6 +4,7 @@ import BattleNet from "next-auth/providers/battlenet";
 declare module "next-auth" {
   interface Session {
     access_token?: string;
+    expires_at?: number;
   }
 }
 
@@ -31,6 +32,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     jwt({ token, account, user }) {
       if (account && account.access_token) {
         token.access_token = account.access_token;
+        token.expires_at = account.expires_at;
       }
       if (user) {
         token.id = user.id;
@@ -39,6 +41,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     },
     async session({ session, token }) {
       session.access_token = token.access_token as string | undefined;
+      session.expires_at = token.expires_at as number | undefined;
       session.user.id = token.id as string;
       return session;
     }
