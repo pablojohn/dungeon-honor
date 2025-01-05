@@ -1,20 +1,14 @@
-import { auth } from 'auth';
 import { NextResponse } from 'next/server';
+import { validateAuth } from "@/app/utils/sessionUtils";
 
 export async function GET() {
+  const { accessToken, errorResponse } = await validateAuth();
+
+  if (errorResponse) {
+    return errorResponse;
+  }
+
   try {
-    // Retrieve session and access token
-    const session = await auth();
-    const accessToken = session?.access_token;
-
-    if (!accessToken) {
-      return NextResponse.json(
-        { error: 'Access token is missing from the session' },
-        { status: 400 }
-      );
-    }
-
-    // Fetch data from Blizzard API
     const response = await fetch(
       'https://us.api.blizzard.com/profile/user/wow?namespace=profile-us&locale=en_US',
       {
@@ -47,7 +41,7 @@ export async function GET() {
 function extractCharacterAndRealm(data: BlizzardData): CharacterRealm[] {
   return data.wow_accounts.flatMap(account =>
     account.characters
-      .filter(character => character.level === 80) // Adjust level filter as needed
+      .filter(character => character.level === 80)
       .map(character => ({
         id: character.id,
         name: character.name,
@@ -58,7 +52,6 @@ function extractCharacterAndRealm(data: BlizzardData): CharacterRealm[] {
   );
 }
 
-// TypeScript interfaces
 interface Realm {
   name: string;
 }

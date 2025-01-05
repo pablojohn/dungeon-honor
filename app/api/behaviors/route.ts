@@ -1,3 +1,4 @@
+import { validateAuth } from "@/app/utils/sessionUtils";
 import { Redis } from "@upstash/redis";
 
 const redis = Redis.fromEnv();
@@ -59,6 +60,12 @@ export async function GET(req: Request): Promise<Response> {
 }
 
 export async function POST(req: Request): Promise<Response> {
+  const { errorResponse } = await validateAuth();
+
+  if (errorResponse) {
+    return errorResponse;
+  }
+
   if (req.headers.get("Content-Type") !== "application/json") {
     return new Response("Must be JSON", { status: 400 });
   }

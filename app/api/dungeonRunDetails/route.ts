@@ -1,3 +1,5 @@
+import { validateAuth } from "@/app/utils/sessionUtils";
+
 export const config = {
   runtime: "edge",
 };
@@ -10,6 +12,12 @@ interface Character {
 }
 
 export async function GET(req: Request): Promise<Response> {
+  const { errorResponse } = await validateAuth();
+
+  if (errorResponse) {
+    return errorResponse;
+  }
+
   const url = new URL(req.url);
   const keystone_run_id = url.searchParams.get("keystone_run_id");
   const exclude_name = url.searchParams.get("exclude_name");
