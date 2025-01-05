@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { WoWCharacters } from './wow-characters';
 
-export default function WoWData({ accessToken, userId }: { accessToken: string; userId: string }) {
+export default function WoWData({ userId }: { userId: string }) {
   interface Character {
     id: number;
     name: string;
@@ -16,19 +16,9 @@ export default function WoWData({ accessToken, userId }: { accessToken: string; 
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    if (!accessToken) {
-      setLoading(false);
-      setError(new Error('Not logged into Battle.net'));
-      return;
-    }
-
     async function fetchData() {
       try {
-        const response = await fetch('/api/characters', {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
+        const response = await fetch('/api/characters');
         if (!response.ok) {
           throw new Error('Failed to fetch characters');
         }
@@ -41,7 +31,7 @@ export default function WoWData({ accessToken, userId }: { accessToken: string; 
     }
 
     fetchData();
-  }, [accessToken]);
+  }, []);
 
   if (loading) {
     return <div>Loading...</div>;

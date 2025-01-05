@@ -1,16 +1,20 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { auth } from 'auth';
+import { NextResponse } from 'next/server';
 
-export async function GET(req: NextRequest) {
-  const authorizationHeader = req.headers.get('Authorization');
-
-  // Extract the token from the 'Authorization' header
-  if (!authorizationHeader || !authorizationHeader.startsWith('Bearer ')) {
-    return NextResponse.json({ error: 'Access token is required in Authorization header' }, { status: 400 });
-  }
-
-  const accessToken = authorizationHeader.split(' ')[1]; // Get the token after 'Bearer '
-
+export async function GET() {
   try {
+    // Retrieve session and access token
+    const session = await auth();
+    const accessToken = session?.access_token;
+
+    if (!accessToken) {
+      return NextResponse.json(
+        { error: 'Access token is missing from the session' },
+        { status: 400 }
+      );
+    }
+
+    // Fetch data from Blizzard API
     const response = await fetch(
       'https://us.api.blizzard.com/profile/user/wow?namespace=profile-us&locale=en_US',
       {
@@ -21,22 +25,29 @@ export async function GET(req: NextRequest) {
     );
 
     if (!response.ok) {
-      return NextResponse.json({ error: 'Failed to fetch characters from Battle.net' }, { status: 500 });
+      return NextResponse.json(
+        { error: 'Failed to fetch characters from Battle.net' },
+        { status: response.status }
+      );
     }
 
     const bnetData = await response.json();
-    const characters = getCharacterAndRealm(bnetData);
+    const characters = extractCharacterAndRealm(bnetData);
 
     return NextResponse.json(characters);
-  } catch {
-    return NextResponse.json({ error: 'An error occurred while processing the request' }, { status: 500 });
+  } catch (error) {
+    console.error('Error processing request:', error);
+    return NextResponse.json(
+      { error: 'An error occurred while processing the request' },
+      { status: 500 }
+    );
   }
 }
 
-function getCharacterAndRealm(data: BlizzardData): CharacterRealm[] {
+function extractCharacterAndRealm(data: BlizzardData): CharacterRealm[] {
   return data.wow_accounts.flatMap(account =>
     account.characters
-      .filter(character => character.level === 80)
+      .filter(character => character.level === 80) // Adjust level filter as needed
       .map(character => ({
         id: character.id,
         name: character.name,
@@ -47,6 +58,7 @@ function getCharacterAndRealm(data: BlizzardData): CharacterRealm[] {
   );
 }
 
+// TypeScript interfaces
 interface Realm {
   name: string;
 }
@@ -69,8 +81,11 @@ interface BlizzardData {
 }
 
 interface CharacterRealm {
+  id: number;
   name: string;
   realm: string;
+  class: string;
+  race: string;
 }
 
 interface CharacterClass {

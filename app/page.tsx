@@ -21,10 +21,7 @@ export default async function Home() {
           </div>
         </div>
       ) : (
-        <WoWData
-          accessToken={session?.access_token ?? ""}
-          userId={session?.user?.id ?? ""}
-        />
+        <WoWData userId={session?.user?.id ?? ""} />
       )}
     </div>
   );
