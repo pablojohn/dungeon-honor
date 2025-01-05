@@ -8,11 +8,34 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Dungeon Honor",
-  description: "Site to track M+ player behavior",
+  title: {
+    default: "Dungeon Honor",
+    template: "%s | dungeonhonor.com",
+  },
+  description: "A site to rate teammates after Mythic+ runs",
+  openGraph: {
+    title: "dungeonhonor.com",
+    description:
+      "A site to rate teammates after Mythic+ runs",
+    url: "https://dungeonhonor.com",
+    siteName: "dungeonhonor.com",
+    locale: "en-US",
+    type: "website",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
   icons: {
-    shortcut: "/favicon.png"
-  }
+    shortcut: "/favicon.png",
+  },
 };
 
 export default function RootLayout({ children, }: React.PropsWithChildren) {
