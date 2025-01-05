@@ -40,7 +40,7 @@ const DualButton: React.FC<DualButtonProps> = ({
       case "green":
         return "bg-green-500 hover:bg-green-600";
       default:
-        return "bg-green-500 hover:bg-green-600"; // Default color
+        return "bg-gray-600 hover:bg-gray-600"; // Default color
     }
   };
 
