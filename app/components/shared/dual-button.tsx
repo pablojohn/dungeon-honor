@@ -61,13 +61,13 @@ const DualButton: React.FC<DualButtonProps> = ({
   };
 
   return (
-    <div className="flex flex-col items-stretch w-fit border border-green-500 rounded-lg">
+    <div className="flex flex-col items-stretch w-fit border rounded-lg">
       <div className={`flex items-center px-4 py-2 text-base font-medium text-center ${getButtonColor()} text-white border-b`}>
         {/* Display the icon and title side by side */}
         <span className="mr-2">{icon}</span>
         <span>{title}</span>
       </div>
-      <div className="border-t border-green-300"></div>
+      <div className="border-t"></div>
       <div className="flex divide-x divide-green-700">
         <button
           onClick={handlePlusClick}
