@@ -7,18 +7,18 @@ export default async function Home() {
   const isExpired = isTokenExpired(session?.expires_at);
 
   return (
-    <div className="flex flex-col gap-6">
-      <h1 className="text-3xl font-bold">Dungeon Honor</h1>
-      <div>A place used to rate teammate behavior in m+ dungeons.</div>
+    <div className="container mx-auto flex flex-col gap-8 px-6 py-12 text-center sm:px-12 md:gap-12">
+      <h1 className="text-4xl font-extrabold bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+        Dungeon Honor
+      </h1>
+      <p className="text-lg text-gray-300">
+        Rate teammate behavior in Mythic+ dungeons.
+      </p>
 
       {isExpired ? (
-        <div className="flex w-full flex-col gap-4 rounded-md bg-gray-100 p-4">
-          <h2 className="text-xl font-bold">Error</h2>
-          <div className="flex flex-col rounded-md bg-neutral-100">
-            <pre className="whitespace-pre-wrap break-all px-4 py-6">
-              {"Log in to rate teammates"}
-            </pre>
-          </div>
+        <div className="flex flex-col gap-4 rounded-lg border border-gray-700 bg-gray-800 p-6 text-gray-300">
+          <h2 className="text-2xl font-bold">Log In Required</h2>
+          <p className="text-sm text-gray-400">Log in to rate your teammates.</p>
         </div>
       ) : (
         <WoWData userId={session?.user?.id ?? ""} />

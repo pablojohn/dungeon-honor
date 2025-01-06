@@ -74,24 +74,42 @@ export const WoWDungeon: React.FC<WoWDungeonProps> = ({ dungeons, userId, charac
 
   return (
     <div className="flex flex-wrap gap-4">
-      {dungeons && dungeons.map((dungeon) => (
-        <div key={dungeon.keystone_run_id}
-          onClick={() => handleCardClick(dungeon.keystone_run_id)}
-          className={`rounded-md transition-all ${activeDungeonId === dungeon.keystone_run_id
-            ? "border-2 border-gray-900 bg-white shadow-md"
-            : "border border-gray-300 bg-white hover:shadow-sm"
-            } cursor-pointer`}>
-          <DungeonCard
-            name={dungeon.name}
-            mythic_level={dungeon.mythic_level} />
-        </div>
-      ))}
+      {/* Dungeon Cards */}
+      <div className="flex flex-wrap gap-6 w-full">
+        {dungeons.map((dungeon) => (
+          <div
+            key={dungeon.keystone_run_id}
+            onClick={() => handleCardClick(dungeon.keystone_run_id)}
+            className={`rounded-lg p-4 transition-transform duration-300 cursor-pointer ${activeDungeonId === dungeon.keystone_run_id
+              ? "border-2 border-blue-500 bg-gradient-to-r from-gray-800 to-gray-900 shadow-lg transform scale-105"
+              : "border border-gray-700 bg-gray-800 hover:shadow-md hover:scale-105"
+              }`}
+          >
+            <DungeonCard
+              name={dungeon.name}
+              mythic_level={dungeon.mythic_level}
+            />
+          </div>
+        ))}
+      </div>
+
+      {/* Active Dungeon Details */}
       {activeDungeonId && activeDungeon && (
-        <div className="flex w-full flex-col gap-4 rounded-md bg-gray-100 p-4">
-          <h2 className="text-xl font-bold">Run  Detail - <span className="text-base font-normal">Rate a teammates behavior</span></h2>
-          <div className="flex flex-col rounded-md bg-neutral-100">
-            {loading && <p>Loading run detail...</p>}
-            {error && <p className="text-red-500">{error}</p>}
+        <div className="flex w-full flex-col gap-6 rounded-lg border border-gray-700 bg-gray-900 p-6 shadow-lg transition-all duration-300">
+          <h2 className="text-2xl font-bold text-white">
+            Run Detail for <span className="text-blue-400">{activeDungeon.name} {activeDungeon.mythic_level}</span>
+          </h2>
+          <div className="flex flex-col gap-4 rounded-lg bg-gray-800 p-4">
+            {loading && (
+              <p className="text-center text-gray-400 animate-pulse">
+                Loading run detail...
+              </p>
+            )}
+            {error && (
+              <p className="text-center text-red-500">
+                Error loading dungeon details: {error}
+              </p>
+            )}
             {!loading && !error && (
               dungeonRunDetailData ? (
                 <div>
@@ -101,17 +119,18 @@ export const WoWDungeon: React.FC<WoWDungeonProps> = ({ dungeons, userId, charac
                     clear_time_ms={dungeonRunDetailData.clear_time_ms}
                     time_remaining_ms={dungeonRunDetailData.time_remaining_ms}
                     characters={dungeonRunDetailData.characters}
-                    userId={userId} />
+                    userId={userId}
+                  />
                 </div>
               ) : (
-                <pre className="whitespace-pre-wrap break-all px-4 py-6">
-                  {dungeonRunDetailData ? JSON.stringify(dungeonRunDetailData, null, 2) : "No dungeon run details available."}
-                </pre>
+                <div className="text-center text-gray-400">
+                  No dungeon run details available.
+                </div>
               )
             )}
           </div>
         </div>
       )}
     </div>
-  )
+  );
 }

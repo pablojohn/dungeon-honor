@@ -8,7 +8,7 @@ export default async function DesktopNav() {
     const isExpired = isTokenExpired(session?.expires_at);
 
     if (!session?.user || isExpired) {
-        return <SignInButton />;
+        return <SignInButton className="rounded-lg bg-blue-600 px-6 py-3 text-white shadow-md hover:scale-105 hover:bg-blue-700 transition-transform" />;
     }
 
     return (
@@ -18,7 +18,7 @@ export default async function DesktopNav() {
                     {session.user.name}
                 </p>
             </div>
-            <SignOutButton />
+            <SignOutButton className="rounded-lg bg-blue-600 px-6 py-3 text-white shadow-md hover:scale-105 hover:bg-blue-700 transition-transform" />
         </div>
     );
 }

@@ -18,15 +18,14 @@ const DualButton: React.FC<DualButtonProps> = ({
 }) => {
   const [isDisabled, setIsDisabled] = useState(false); // Track if buttons should be disabled
 
-  // Handle button click: Disable both buttons after either is clicked
   const handlePlusClick = () => {
     onPlusClick();
-    setIsDisabled(true); // Disable both buttons after click
+    setIsDisabled(true);
   };
 
   const handleMinusClick = () => {
     onMinusClick();
-    setIsDisabled(true); // Disable both buttons after click
+    setIsDisabled(true);
   };
 
   const getButtonColor = () => {
@@ -40,11 +39,10 @@ const DualButton: React.FC<DualButtonProps> = ({
       case "green":
         return "bg-green-500 hover:bg-green-600";
       default:
-        return "bg-gray-600 hover:bg-gray-600"; // Default color
+        return "bg-gray-600 hover:bg-gray-700"; // Default color
     }
   };
 
-  // Disabled button color, opacity, and styling
   const getDisabledButtonColor = () => {
     switch (color) {
       case "red":
@@ -56,36 +54,39 @@ const DualButton: React.FC<DualButtonProps> = ({
       case "green":
         return "bg-green-300 cursor-not-allowed opacity-60";
       default:
-        return "bg-green-300 cursor-not-allowed opacity-60"; // Default color
+        return "bg-gray-300 cursor-not-allowed opacity-60"; // Default color
     }
   };
 
   return (
-    <div className="flex flex-col items-stretch w-fit border rounded-lg">
-      <div className={`flex items-center px-4 py-2 text-base font-medium text-center ${getButtonColor()} text-white border-b`}>
-        {/* Display the icon and title side by side */}
-        <span className="mr-2">{icon}</span>
-        <span>{title}</span>
+    <div className="flex flex-col items-stretch w-full max-w-xs sm:max-w-sm rounded-lg shadow-md overflow-hidden bg-gradient-to-r from-gray-800 to-gray-900">
+      {/* Title Section */}
+      <div
+        className={`flex flex-col-reverse sm:flex-row items-center justify-center px-4 py-3 text-sm sm:text-base font-semibold text-white ${getButtonColor()} border-b border-gray-700`}
+      >
+        <span className="mt-1 sm:mt-0 sm:mr-2">{icon}</span>
+        <span className="text-center">{title}</span>
       </div>
-      <div className="border-t"></div>
-      <div className="flex divide-x divide-green-700">
+
+      {/* Buttons Section */}
+      <div className="flex flex-col sm:flex-row divide-y sm:divide-y-0 sm:divide-x divide-gray-700">
         <button
           onClick={handlePlusClick}
-          disabled={isDisabled} // Disable if a choice has been made
-          className={`flex-1 px-4 py-2 text-base font-medium text-white focus:outline-none 
-            ${isDisabled ? getDisabledButtonColor() : getButtonColor()}
-            ${!isDisabled ? 'hover:bg-opacity-80' : ''} flex justify-center items-center`}
+          disabled={isDisabled}
+          className={`flex-1 flex items-center justify-center px-4 py-3 sm:py-2 text-white text-base font-medium focus:outline-none transition 
+          ${isDisabled ? getDisabledButtonColor() : getButtonColor()} 
+          ${!isDisabled ? "hover:bg-opacity-80 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" : ""}`}
         >
-          <Plus />
+          <Plus className="w-5 h-5" />
         </button>
         <button
           onClick={handleMinusClick}
-          disabled={isDisabled} // Disable if a choice has been made
-          className={`flex-1 px-4 py-2 text-base font-medium text-white focus:outline-none 
-            ${isDisabled ? getDisabledButtonColor() : getButtonColor()}
-            ${!isDisabled ? 'hover:bg-opacity-80' : ''} flex justify-center items-center`}
+          disabled={isDisabled}
+          className={`flex-1 flex items-center justify-center px-4 py-3 sm:py-2 text-white text-base font-medium focus:outline-none transition 
+          ${isDisabled ? getDisabledButtonColor() : getButtonColor()} 
+          ${!isDisabled ? "hover:bg-opacity-80 focus:ring-2 focus:ring-offset-2 focus:ring-red-500" : ""}`}
         >
-          <Minus />
+          <Minus className="w-5 h-5" />
         </button>
       </div>
     </div>

@@ -38,13 +38,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children, }: React.PropsWithChildren) {
+export default function RootLayout({ children }: React.PropsWithChildren) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} bg-gray-900 text-white`}>
         <div className="flex h-full min-h-screen w-full flex-col justify-between">
           <Header />
-          <main className="mx-auto w-full max-w-3xl flex-auto px-4 py-4 sm:px-6 md:py-6">
+          <main className="mx-auto w-full max-w-5xl flex-auto px-6 py-8 sm:px-8 md:py-12 bg-gradient-to-b from-gray-800 via-gray-900 to-black shadow-lg rounded-lg">
             {children}
           </main>
           <SpeedInsights />

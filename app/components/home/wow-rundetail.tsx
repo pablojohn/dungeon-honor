@@ -32,35 +32,47 @@ export const WoWRunDetail: React.FC<WoWRunDetailProps> = ({ keystone_run_id, num
   };
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="bg-gray-100 p-4 rounded-lg shadow-md w-full">
-        <ul className="flex space-x-6 text-gray-600">
+    <div className="flex flex-col gap-4 flex-grow">
+      {/* Run Details Panel */}
+      <div className="w-full rounded-lg bg-gradient-to-r from-gray-800 to-gray-900 p-6 text-white shadow-lg">
+        <ul className="flex flex-col sm:flex-wrap md:flex-nowrap items-start sm:items-center gap-6 text-lg">
           {num_chests !== undefined && (
-            <li>
-              <span>Chests: </span>
-              <span className="font-medium">{num_chests}</span>
+            <li className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+              <span className="font-semibold text-blue-400">Chests:</span>
+              <span className="font-medium text-gray-300">{num_chests}</span>
             </li>
           )}
           {clear_time_ms !== undefined && (
-            <li>
-              <span>Clear time: </span>
-              <span className="font-medium">{formatTime(clearTimeSeconds)}</span>
+            <li className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+              <span className="font-semibold text-blue-400">Clear time:</span>
+              <span className="font-medium text-gray-300">{formatTime(clearTimeSeconds)}</span>
             </li>
           )}
           {time_remaining_ms !== undefined && (
-            <li>
-              <span>Time remaining: </span>
-              <span className="font-medium">{formatTime(timeRemainingSeconds)}</span>
+            <li className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+              <span className="font-semibold text-blue-400">Time remaining:</span>
+              <span className="font-medium text-gray-300">{formatTime(timeRemainingSeconds)}</span>
             </li>
           )}
         </ul>
       </div>
+
+      {/* Character Cards */}
       {characters &&
         characters.map((character) => {
-          const slug = `${character.name.replace(' ', '-').toLowerCase()}:${character.realm.replace(' ', '-').toLowerCase()}:${keystone_run_id}:${userId}`;
+          const slug = `${character.name
+            .replace(" ", "-")
+            .toLowerCase()}:${character.realm
+              .replace(" ", "-")
+              .toLowerCase()}:${keystone_run_id}:${userId}`;
           return (
             <div key={character.id}>
-              <RunDetailCard name={character.name} realm={character.realm} role={character.role} slug={slug} />
+              <RunDetailCard
+                name={character.name}
+                realm={character.realm}
+                role={character.role}
+                slug={slug}
+              />
             </div>
           );
         })}

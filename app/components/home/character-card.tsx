@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface CardProps {
   realm: string;
@@ -9,12 +9,16 @@ interface CardProps {
 
 export const CharacterCard: React.FC<CardProps> = ({ realm, name, playable_class, playable_race }) => {
   return (
-    <div className="max-w-sm mx-auto p-4 bg-white rounded-lg shadow-md border border-gray-200">
+    <div className="relative mx-auto max-w-sm overflow-hidden rounded-lg bg-gradient-to-r from-gray-800 to-gray-900 p-6 text-white shadow-md transition-transform duration-300 hover:scale-105 hover:shadow-lg">
       <div className="text-center">
-        <h2 className="text-xl font-bold text-gray-800">{name}</h2>
-        <p className="text-gray-600">{playable_race} {playable_class}</p>
-        <p className="text-sm text-gray-600">{realm}</p>
+        <h2 className="text-2xl font-extrabold text-blue-400">{name}</h2>
+        <p className="mt-2 text-lg text-gray-300">
+          {playable_race} <span className="font-medium text-gray-400">{playable_class}</span>
+        </p>
+        <p className="mt-1 text-sm text-gray-500">{realm}</p>
       </div>
+      {/* Decorative Element */}
+      <div className="absolute inset-0 pointer-events-none -z-10 bg-gradient-to-br from-blue-500/20 via-transparent to-pink-500/20 opacity-50 blur-lg" />
     </div>
   );
 };

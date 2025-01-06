@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useMediaQuery } from "react-responsive"; // Import useMediaQuery
 import BehaviorGraph from "./behavior-graph";
 import RejoinRatingGraph from "./rejoin-rating-graph";
 import HonorScore from "./honor-score";
@@ -27,12 +28,15 @@ export default function ReportCard() {
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
+  // Check if the current view is mobile
+  const isMobile = useMediaQuery({ maxWidth: 768 });
+
   const calculateTeammateScore = (behaviorData: BehaviorData, rejoinData: RejoinData) => {
     if (!behaviorData?.data || !rejoinData?.data) return 0;
 
     const categoryScores: { [key: string]: number } = { damage: 0, defense: 0, healing: 0, communication: 0 };
 
-    behaviorData.data.forEach(item => {
+    behaviorData.data.forEach((item) => {
       const segments = item.key.split(":");
       const behaviorName = segments[segments.length - 2];
       const value = parseInt(segments[segments.length - 1], 10);
@@ -55,7 +59,7 @@ export default function ReportCard() {
 
   const processBehaviorData = () => {
     if (!reportData?.data) return [];
-    const labelsAndValues = reportData.data.map(item => {
+    const labelsAndValues = reportData.data.map((item) => {
       const segments = item.key.split(":");
       const behaviorName = segments[segments.length - 2];
       const value = parseInt(segments[segments.length - 1], 10);
@@ -69,7 +73,7 @@ export default function ReportCard() {
       }
     });
 
-    return Object.keys(labelSum).map(behaviorName => ({
+    return Object.keys(labelSum).map((behaviorName) => ({
       name: behaviorName,
       value: labelSum[behaviorName],
     }));
@@ -112,75 +116,101 @@ export default function ReportCard() {
   const behaviorChartData = processBehaviorData();
 
   return (
-    <div className="flex justify-center items-start bg-gray-100 pt-20 pb-10 w-full">
-      <div className="flex flex-col items-center space-y-6 w-full max-w-xl">
-        <form onSubmit={handleSubmit} className="flex flex-col items-center space-y-6 w-full">
-          <h1 className="text-3xl font-semibold text-center">Search for a character</h1>
-          <div className="relative w-full max-w-sm">
-            <input
-              type="text"
-              className={`w-full px-6 py-3 text-center rounded-full border ${error.name ? "border-red-500" : "border-gray-300"} shadow-md focus:outline-none focus:ring-2 ${error.name ? "focus:ring-red-500" : "focus:ring-blue-500"}`}
-              placeholder="Enter your name"
-              value={name}
-              onChange={(e) => setName(e.target.value.toLowerCase())}
-            />
-            {error.name && <p className="mt-1 text-sm text-red-500 text-center">Name is required.</p>}
-          </div>
-          <div className="relative w-full max-w-sm">
-            <input
-              type="text"
-              className={`w-full px-6 py-3 text-center rounded-full border ${error.realm ? "border-red-500" : "border-gray-300"} shadow-md focus:outline-none focus:ring-2 ${error.realm ? "focus:ring-red-500" : "focus:ring-blue-500"}`}
-              placeholder="Enter your realm"
-              value={realm}
-              onChange={(e) => setRealm(e.target.value.toLowerCase())}
-            />
-            {error.realm && <p className="mt-1 text-sm text-red-500 text-center">Realm is required.</p>}
-          </div>
-          <button
-            type="submit"
-            className="px-6 py-3 rounded-full bg-black text-white font-semibold shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            Submit
-          </button>
-        </form>
+    <div className="flex w-full flex-col gap-6 rounded-lg bg-gray-800 p-6 text-white shadow-lg">
+      <h2 className="text-2xl font-bold text-center">
+        Search for a Character
+        <span className="block text-lg font-normal text-gray-400">
+          Enter character details below
+        </span>
+      </h2>
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col items-center gap-6"
+      >
+        <div className="relative w-full">
+          <input
+            type="text"
+            className={`w-full px-6 py-4 text-center rounded-md border ${error.name ? "border-red-500" : "border-gray-700"
+              } bg-gray-900 text-white focus:outline-none focus:ring-2 ${error.name ? "focus:ring-red-500" : "focus:ring-blue-500"
+              } placeholder-gray-500 shadow-md`}
+            placeholder="Enter character name"
+            value={name}
+            onChange={(e) => setName(e.target.value.toLowerCase())}
+          />
+          {error.name && (
+            <p className="mt-1 text-sm text-red-400 text-center">
+              Name is required.
+            </p>
+          )}
+        </div>
+        <div className="relative w-full">
+          <input
+            type="text"
+            className={`w-full px-6 py-4 text-center rounded-md border ${error.realm ? "border-red-500" : "border-gray-700"
+              } bg-gray-900 text-white focus:outline-none focus:ring-2 ${error.realm ? "focus:ring-red-500" : "focus:ring-blue-500"
+              } placeholder-gray-500 shadow-md`}
+            placeholder="Enter realm"
+            value={realm}
+            onChange={(e) => setRealm(e.target.value.toLowerCase())}
+          />
+          {error.realm && (
+            <p className="mt-1 text-sm text-red-400 text-center">
+              Realm is required.
+            </p>
+          )}
+        </div>
+        <button
+          type="submit"
+          className="w-full px-6 py-4 rounded-md bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold shadow-md hover:from-blue-400 hover:to-indigo-500 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all"
+        >
+          Submit
+        </button>
+      </form>
 
-        <div className="mt-6 w-full">
-          {loading && <p className="text-center">Loading report card...</p>}
-          {submitted && !loading && !reportData && (
-            <div className="flex justify-center mt-4 w-full">
-              <p className="text-center text-xl font-semibold text-gray-600">No report card data found.</p>
+      {submitted && (
+        <div className="flex flex-col gap-6 mt-6">
+          {loading && (
+            <p className="text-center text-gray-400">Loading report card...</p>
+          )}
+          {!loading && !reportData && (
+            <div className="flex justify-center">
+              <p className="text-center text-xl font-semibold text-gray-400">
+                No report card data found.
+              </p>
             </div>
           )}
-          {submitted && !loading && reportData && reportData.data.length === 0 ? (
-            <div className="flex justify-center mt-4 w-full">
-              <p className="text-center text-xl font-semibold text-gray-600">No report card data found.</p>
-            </div>
-          ) : (
-            reportData && (
-              <>
-                <h2 className="text-2xl text-center font-semibold mt-6">
-                  Report for{" "}
-                  <Link
-                    href={`https://raider.io/characters/us/${submittedRealm.toLowerCase()}/${submittedName.toLowerCase()}`}
-                    className="text-center text-black underline font-semibold hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    target="_blank" // Add this line
-                    rel="noopener noreferrer"
-                  >
-                    {submittedName.charAt(0).toUpperCase() + submittedName.slice(1)} - {submittedRealm.charAt(0).toUpperCase() + submittedRealm.slice(1)}
-                  </Link>
-                  {" "}for TWW Season 1
-                </h2>
-                <HonorScore score={calculateTeammateScore(reportData, rejoinData!)} />
-                <div className="mt-8">
+          {!loading && reportData && (
+            <>
+              <h2 className="text-xl font-bold text-center">
+                Report for{" "}
+                <Link
+                  href={`https://raider.io/characters/us/${submittedRealm.toLowerCase()}/${submittedName.toLowerCase()}`}
+                  className="underline text-blue-400 hover:text-blue-300 transition-all"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {submittedName.charAt(0).toUpperCase() +
+                    submittedName.slice(1)}{" "}
+                  -{" "}
+                  {submittedRealm.charAt(0).toUpperCase() +
+                    submittedRealm.slice(1)}
+                </Link>
+              </h2>
+              <HonorScore score={calculateTeammateScore(reportData, rejoinData!)} />
+              {!isMobile && ( // Only display graphs if not in mobile view
+                <div className="mt-6 rounded-md bg-gray-900 p-6 shadow-md">
                   <BehaviorGraph chartData={behaviorChartData} />
                 </div>
-              </>
-            )
+              )}
+            </>
           )}
-
-          {submitted && !loading && rejoinData && <RejoinRatingGraph rejoinData={rejoinData} />}
+          {!loading && rejoinData && !isMobile && ( // Only display graphs if not in mobile view
+            <div className="mt-6 rounded-md bg-gray-900 p-6 shadow-md">
+              <RejoinRatingGraph rejoinData={rejoinData} />
+            </div>
+          )}
         </div>
-      </div>
+      )}
     </div>
   );
 }

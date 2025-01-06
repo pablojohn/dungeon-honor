@@ -12,11 +12,11 @@ interface Character {
 
 interface WoWCharactersProps {
   characters: Character[];
-  userId: string; // Add userId to the props
+  userId: string;
 }
 
 interface DungeonData {
-  dungeons: { name: string; mythic_level: number; keystone_run_id: number }[]; // Adjust structure as per your API response
+  dungeons: { name: string; mythic_level: number; keystone_run_id: number }[];
 }
 
 export const WoWCharacters: React.FC<WoWCharactersProps> = ({ characters, userId }) => {
@@ -29,10 +29,8 @@ export const WoWCharacters: React.FC<WoWCharactersProps> = ({ characters, userId
     setActiveCharacterId((prevId) => (prevId === id ? null : id));
   };
 
-  // Get the active character details
   const activeCharacter = characters.find((character) => character.id === activeCharacterId);
 
-  // Fetch dungeons when activeCharacterId changes
   useEffect(() => {
     if (activeCharacterId && activeCharacter) {
       const { name, realm } = activeCharacter;
@@ -43,11 +41,9 @@ export const WoWCharacters: React.FC<WoWCharactersProps> = ({ characters, userId
 
         try {
           const response = await fetch(`/api/dungeons?name=${name}&realm=${realm}`);
-
           if (!response.ok) {
             throw new Error("Failed to fetch dungeons");
           }
-
           const data = await response.json();
           setDungeonData(data);
         } catch (err) {
@@ -59,21 +55,22 @@ export const WoWCharacters: React.FC<WoWCharactersProps> = ({ characters, userId
 
       fetchDungeons();
     } else {
-      setDungeonData(null); // Reset dungeon data if no character is active
+      setDungeonData(null);
     }
   }, [activeCharacterId, activeCharacter]);
 
   return (
-    <div className="flex flex-wrap gap-4">
-      {characters &&
-        characters.map((character) => (
+    <div className="flex flex-col gap-6">
+      {/* Character Cards */}
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-6">
+        {characters.map((character) => (
           <div
             key={character.id}
             onClick={() => handleCardClick(character.id)}
-            className={`rounded-md transition-all ${activeCharacterId === character.id
-              ? "border-2 border-gray-900 bg-white shadow-md"
-              : "border border-gray-300 bg-white hover:shadow-sm"
-              } cursor-pointer`}
+            className={`relative rounded-lg p-4 transition-transform duration-300 cursor-pointer ${activeCharacterId === character.id
+              ? "border-2 border-blue-500 bg-gradient-to-r from-blue-600 to-blue-800 shadow-lg transform scale-105"
+              : "border border-gray-700 bg-gray-800 hover:shadow-md hover:scale-105"
+              }`}
           >
             <CharacterCard
               realm={character.realm}
@@ -83,24 +80,39 @@ export const WoWCharacters: React.FC<WoWCharactersProps> = ({ characters, userId
             />
           </div>
         ))}
+      </div>
+
+      {/* Dungeon Data Panel */}
       {activeCharacterId && activeCharacter && (
-        <div className="flex w-full flex-col gap-4 rounded-md bg-gray-100 p-4">
-          <h2 className="text-xl font-bold">Dungeons - <span className="text-base font-normal">Select a dungeon run</span></h2>
-          <div className="flex flex-col rounded-md bg-neutral-100">
-            {/* Loading, Error, or Data Display */}
-            {loading && <p>Loading dungeons...</p>}
-            {error && <p className="text-red-500">{error}</p>}
-            {!loading &&
-              !error &&
-              (dungeonData && dungeonData.dungeons.length > 0 ? (
-                <div>
-                  <WoWDungeon dungeons={dungeonData.dungeons} userId={userId} characterName={activeCharacter.name} characterRealm={activeCharacter.realm} />
-                </div>
-              ) : (
-                <pre className="whitespace-pre-wrap break-all px-4 py-6">
-                  {activeCharacter.name} from {activeCharacter.realm} has completed no dungeons this week.
-                </pre>
-              ))}
+        <div className="flex flex-col gap-6 rounded-lg border border-gray-700 bg-gray-900 p-6 shadow-lg transition-all duration-300">
+          <h2 className="text-2xl font-bold text-white">
+            Dungeons for <span className="text-blue-400">{activeCharacter.name}</span>
+          </h2>
+          <div className="flex flex-col gap-4">
+            {loading && (
+              <div className="text-center text-gray-400 animate-pulse">Loading dungeons...</div>
+            )}
+            {error && (
+              <div className="text-center text-red-500">
+                Failed to load dungeons: {error}
+              </div>
+            )}
+            {!loading && !error && (
+              <>
+                {dungeonData && dungeonData.dungeons.length > 0 ? (
+                  <WoWDungeon
+                    dungeons={dungeonData.dungeons}
+                    userId={userId}
+                    characterName={activeCharacter.name}
+                    characterRealm={activeCharacter.realm}
+                  />
+                ) : (
+                  <div className="text-center text-gray-400">
+                    No dungeons completed for {activeCharacter.name} this week.
+                  </div>
+                )}
+              </>
+            )}
           </div>
         </div>
       )}
