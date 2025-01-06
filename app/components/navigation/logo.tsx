@@ -1,16 +1,18 @@
 import Link from "next/link";
-import Image from "next/image";
+import { Shield } from "lucide-react";
 
 export default function Logo() {
   return (
     <Link href="/" className="flex items-center text-white">
-      <Image
-        src="/favicon.png" // Replace with your logo file path
-        alt="Dungeon Honor Logo"
-        width={32}
-        height={32}
-        className="rounded-full"
-      />
+      <div className="relative w-8 h-8">
+        <Shield
+          className="absolute top-0 left-0 text-white"
+          style={{
+            width: "100%", // Shield takes full size
+            height: "100%",
+          }}
+        />
+      </div>
       <span className="ml-2 text-lg font-bold tracking-tight">Dungeon Honor</span>
     </Link>
   );
