@@ -7,7 +7,7 @@ export default async function Home() {
   const isExpired = isTokenExpired(session?.expires_at);
 
   return (
-    <div className="container mx-auto flex flex-col gap-8 px-6 py-12 text-center sm:px-12 md:gap-12">
+    <div className="container sm:container mx-auto flex flex-col gap-8 px-0 sm:px-6 py-12 text-center md:gap-12 max-w-full">
       <h1 className="text-4xl font-extrabold bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
         Dungeon Honor
       </h1>
