@@ -95,7 +95,7 @@ export const RunDetailCard: React.FC<CardProps> = ({ name, realm, role, slug }) 
   };
 
   return (
-    <div className="w-full max-w-lg mx-auto p-4 sm:p-6 bg-gradient-to-r from-gray-800 to-gray-900 rounded-lg shadow-lg text-white">
+    <div className="w-full mx-auto p-4 sm:p-6 bg-gradient-to-r from-gray-800 to-gray-900 rounded-lg shadow-lg text-white">
       <div className="text-center">
         <h2 className="text-2xl font-extrabold text-blue-400">{name}</h2>
         <p className="text-sm text-gray-300">{realm}</p>
@@ -103,7 +103,7 @@ export const RunDetailCard: React.FC<CardProps> = ({ name, realm, role, slug }) 
       </div>
 
       {/* Updated Container for Buttons */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 justify-center mt-6">
+      <div className="grid grid-cols-2 gap-4 justify-center mt-6">
         <DualButton
           title={"Big Dam"}
           icon={<Sword className="w-5 h-5 mr-2" />}

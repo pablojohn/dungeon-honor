@@ -75,7 +75,7 @@ export const WoWDungeon: React.FC<WoWDungeonProps> = ({ dungeons, userId, charac
   return (
     <div className="flex flex-wrap gap-4">
       {/* Dungeon Cards */}
-      <div className="flex flex-wrap gap-6 w-full">
+      <div className="flex flex-wrap gap-6 w-full justify-center sm:justify-start">
         {dungeons.map((dungeon) => (
           <div
             key={dungeon.keystone_run_id}
@@ -95,11 +95,11 @@ export const WoWDungeon: React.FC<WoWDungeonProps> = ({ dungeons, userId, charac
 
       {/* Active Dungeon Details */}
       {activeDungeonId && activeDungeon && (
-        <div className="flex w-full flex-col gap-6 rounded-lg border border-gray-700 bg-gray-900 p-6 shadow-lg transition-all duration-300">
+        <div className="flex w-full flex-col gap-6 rounded-lg border border-gray-700 bg-slate-800 py-6 px-4 sm:px-6 shadow-lg transition-all duration-300">
           <h2 className="text-2xl font-bold text-white">
             Run Detail for <span className="text-blue-400">{activeDungeon.name} {activeDungeon.mythic_level}</span>
           </h2>
-          <div className="flex flex-col gap-4 rounded-lg bg-gray-800 p-4">
+          <div className="flex flex-col gap-4 rounded-lg bg-gray-800 py-4">
             {loading && (
               <p className="text-center text-gray-400 animate-pulse">
                 Loading run detail...

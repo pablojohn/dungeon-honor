@@ -84,7 +84,7 @@ export const WoWCharacters: React.FC<WoWCharactersProps> = ({ characters, userId
 
       {/* Dungeon Data Panel */}
       {activeCharacterId && activeCharacter && (
-        <div className="flex flex-col gap-6 rounded-lg border border-gray-700 bg-gray-900 p-6 shadow-lg transition-all duration-300">
+        <div className="flex flex-col gap-6 rounded-lg border border-gray-700 bg-gray-900 py-6 px-0 sm:px-6 shadow-lg transition-all duration-300">
           <h2 className="text-2xl font-bold text-white">
             Dungeons for <span className="text-blue-400">{activeCharacter.name}</span>
           </h2>

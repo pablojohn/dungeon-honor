@@ -34,24 +34,34 @@ export const WoWRunDetail: React.FC<WoWRunDetailProps> = ({ keystone_run_id, num
   return (
     <div className="flex flex-col gap-4 flex-grow">
       {/* Run Details Panel */}
-      <div className="w-full rounded-lg bg-gradient-to-r from-gray-800 to-gray-900 p-6 text-white shadow-lg">
-        <ul className="flex flex-col sm:flex-wrap md:flex-nowrap items-start sm:items-center gap-6 text-lg">
+      <div className="w-full rounded-lg bg-gradient-to-r from-slate-800 to-slate-900 p-2 text-white shadow-lg">
+        <ul className="flex flex-col sm:flex-wrap md:flex-nowrap items-center gap-6 text-lg">
           {num_chests !== undefined && (
-            <li className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
-              <span className="font-semibold text-blue-400">Chests:</span>
-              <span className="font-medium text-gray-300">{num_chests}</span>
+            <li className="flex flex-col items-center gap-1">
+              <span className="font-semibold text-blue-400">
+                Chests
+              </span>
+              <span className="font-medium text-gray-300 text-center">{num_chests}</span>
             </li>
           )}
           {clear_time_ms !== undefined && (
-            <li className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
-              <span className="font-semibold text-blue-400">Clear time:</span>
-              <span className="font-medium text-gray-300">{formatTime(clearTimeSeconds)}</span>
+            <li className="flex flex-col items-center gap-1">
+              <span className="font-semibold text-blue-400">
+                Clear time
+              </span>
+              <span className="font-medium text-gray-300 text-center">
+                {formatTime(clearTimeSeconds)}
+              </span>
             </li>
           )}
           {time_remaining_ms !== undefined && (
-            <li className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
-              <span className="font-semibold text-blue-400">Time remaining:</span>
-              <span className="font-medium text-gray-300">{formatTime(timeRemainingSeconds)}</span>
+            <li className="flex flex-col items-center gap-1">
+              <span className="font-semibold text-blue-400">
+                Time remaining
+              </span>
+              <span className="font-medium text-gray-300 text-center">
+                {formatTime(timeRemainingSeconds)}
+              </span>
             </li>
           )}
         </ul>
