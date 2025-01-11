@@ -5,6 +5,8 @@ import { useMediaQuery } from "react-responsive"; // Import useMediaQuery
 import BehaviorGraph from "./behavior-graph";
 import RejoinRatingGraph from "./rejoin-rating-graph";
 import HonorScore from "./honor-score";
+import BehaviorTable from "./behavior-table";
+import RejoinRatingTable from "./rejoin-rating-table"; // Import RejoinRatingTable
 import Link from "next/link"; // Import Link from Next.js
 
 interface BehaviorData {
@@ -77,6 +79,61 @@ export default function ReportCard() {
       name: behaviorName,
       value: labelSum[behaviorName],
     }));
+  };
+
+  const processBehaviorDataForStatistics = () => {
+    if (!reportData?.data) return [];
+
+    const labelsAndValues = reportData.data.map((item) => {
+      const segments = item.key.split(":");
+      const behaviorName = segments[segments.length - 2];
+      const value = parseInt(segments[segments.length - 1], 10);
+      return { behaviorName, value };
+    });
+
+    const labelSum: { [key: string]: { positive: number; negative: number } } = {};
+
+    labelsAndValues.forEach(({ behaviorName, value }) => {
+      if (behaviorName) {
+        if (!labelSum[behaviorName]) {
+          labelSum[behaviorName] = { positive: 0, negative: 0 };
+        }
+        if (value > 0) {
+          labelSum[behaviorName].positive += value;
+        } else {
+          labelSum[behaviorName].negative += Math.abs(value);
+        }
+      }
+    });
+
+    return Object.keys(labelSum).map((behaviorName) => ({
+      name: behaviorName,
+      score: labelSum[behaviorName].positive - labelSum[behaviorName].negative,
+      positiveVotes: labelSum[behaviorName].positive,
+      negativeVotes: labelSum[behaviorName].negative,
+    }));
+  };
+
+  const processRejoinDataForStatistics = () => {
+    if (!rejoinData?.data) return [];
+
+    const positiveVotes = rejoinData.data.filter((item) => {
+      const segments = item.key.split(":");
+      return segments[segments.length - 1] === "true"; // Check for "true" votes
+    }).length;
+
+    const negativeVotes = rejoinData.data.filter((item) => {
+      const segments = item.key.split(":");
+      return segments[segments.length - 1] === "false"; // Check for "false" votes
+    }).length;
+
+    return [
+      {
+        name: "Rejoin Rating",
+        positiveVotes,
+        negativeVotes,
+      },
+    ];
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -198,16 +255,22 @@ export default function ReportCard() {
               </h2>
               <HonorScore score={calculateTeammateScore(reportData, rejoinData!)} />
               {!isMobile && ( // Only display graphs if not in mobile view
-                <div className="mt-6 rounded-md bg-gray-900 p-6 shadow-md">
-                  <BehaviorGraph chartData={behaviorChartData} />
+                <div>
+                  <div className="mt-6 rounded-md bg-gray-900 p-6 shadow-md">
+                    <BehaviorGraph chartData={behaviorChartData} />
+                  </div>
+                  <div className="mt-6 rounded-md bg-gray-900 p-6 shadow-md">
+                    <RejoinRatingGraph rejoinData={rejoinData} />
+                  </div>
                 </div>
               )}
+              <div className="mt-6">
+                <BehaviorTable data={processBehaviorDataForStatistics()} />
+              </div>
+              <div className="mt-6">
+                <RejoinRatingTable data={processRejoinDataForStatistics()} />
+              </div>
             </>
-          )}
-          {!loading && rejoinData && !isMobile && ( // Only display graphs if not in mobile view
-            <div className="mt-6 rounded-md bg-gray-900 p-6 shadow-md">
-              <RejoinRatingGraph rejoinData={rejoinData} />
-            </div>
           )}
         </div>
       )}
