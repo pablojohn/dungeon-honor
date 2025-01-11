@@ -7,7 +7,7 @@ export default async function Report() {
         Honor Report
       </h1>
       <p className="text-lg text-gray-300">
-        Lookup your own or other peoples honor report cards for the latest season.
+        Lookup your own or other honor report cards for the latest season.
       </p>
       <div className="flex flex-col gap-4 rounded-lg border border-gray-700 bg-gray-800 pt-6 text-gray-300">
         <ReportCard />
