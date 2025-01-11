@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Sword,
   Shield,
@@ -32,7 +32,6 @@ const saveBehaviorToUpstash = async (slug: string, behavior: string) => {
     if (!response.ok) {
       throw new Error("Failed to save behavior");
     }
-    console.log("Behavior saved successfully");
   } catch (error) {
     console.error(error);
   }
@@ -53,8 +52,6 @@ const saveRejoinRating = async (slug: string, rating: boolean) => {
     if (!response.ok) {
       throw new Error("Failed to save rejoin rating");
     }
-
-    console.log("Rejoin Rating saved successfully");
   } catch (error) {
     console.error("Error in saveRejoinRating:", error);
   }
@@ -66,6 +63,7 @@ export const RunDetailCard: React.FC<CardProps> = ({ name, realm, role, slug }) 
   const [selectedRejoinRating, setSelectedRejoinRating] = useState<boolean | null>(null);
   const [flashBorder, setFlashBorder] = useState(false);
   const [flashColor, setFlashColor] = useState<string>();
+  const [votedFor, setIfVotedFor] = useState<boolean>();
 
   const handleBehaviorClick = (behavior: string, value: 1 | -1, color: string) => {
     if (!selectedBehaviors.some((b) => b.behavior === behavior && b.value === value)) {
@@ -109,6 +107,42 @@ export const RunDetailCard: React.FC<CardProps> = ({ name, realm, role, slug }) 
         return null;
     }
   };
+
+  useEffect(() => {
+    const fetchVotes = async () => {
+      try {
+        const response = await fetch(`/api/votes?slug=${slug}`)
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch votes');
+        }
+
+        const data = await response.json();
+        setIfVotedFor(data.success);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    fetchVotes();
+  }, [slug, votedFor]);
+
+  if (votedFor) {
+    return (
+      <div className="w-full mx-auto p-2 sm:p-6 bg-gradient-to-r from-gray-800 to-gray-900 rounded-lg shadow-lg text-white">
+        <div className="text-center">
+          <h2 className="text-2xl font-extrabold text-blue-400">{name}</h2>
+          <p className="text-sm text-gray-300">{realm}</p>
+          <p className="mt-2 flex justify-center">{renderRoleIcon()}</p>
+        </div>
+        <div className="mt-6 text-center">
+          <span className="font-semibold text-lg text-gray-300">
+            Thanks for your input! Your feedback has already shaped their honor.
+          </span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
