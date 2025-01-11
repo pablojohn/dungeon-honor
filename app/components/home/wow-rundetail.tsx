@@ -34,7 +34,7 @@ export const WoWRunDetail: React.FC<WoWRunDetailProps> = ({ keystone_run_id, num
   return (
     <div className="flex flex-col gap-4 flex-grow">
       {/* Run Details Panel */}
-      <div className="w-full rounded-lg bg-gradient-to-r from-slate-800 to-slate-900 p-2 text-white shadow-lg">
+      <div className="w-full rounded-lg bg-gradient-to-r from-gray-800 to-gray-900 p-2 text-white border-2 border-gray-700">
         <ul className="flex flex-col sm:flex-wrap md:flex-nowrap items-center gap-6 text-lg">
           {num_chests !== undefined && (
             <li className="flex flex-col items-center gap-1">

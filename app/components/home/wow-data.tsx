@@ -71,7 +71,7 @@ export default function WoWData({ userId }: { userId: string }) {
   }
 
   return (
-    <div className="flex w-full flex-col gap-6 rounded-lg bg-gray-800 p-6 text-white shadow-lg">
+    <div className="flex w-full flex-col gap-6 rounded-lg bg-gray-800 p-4 sm:p-6 text-white shadow-lg">
       <h2 className="text-2xl font-bold text-center">
         Characters
         <span className="block text-lg font-normal text-gray-400">Select a character</span>
