@@ -64,7 +64,6 @@ export const RunDetailCard: React.FC<CardProps> = ({ name, realm, role, slug }) 
   const [selectedBehaviors, setSelectedBehaviors] = useState<{ behavior: string; value: 1 | -1 }[]>([]);
   const [showRejoinQuestion, setShowRejoinQuestion] = useState(false);
   const [selectedRejoinRating, setSelectedRejoinRating] = useState<boolean | null>(null);
-  const [showThankYouMessage, setShowThankYouMessage] = useState(false);
   const [flashBorder, setFlashBorder] = useState(false);
   const [flashColor, setFlashColor] = useState<string>();
 
@@ -73,10 +72,13 @@ export const RunDetailCard: React.FC<CardProps> = ({ name, realm, role, slug }) 
       setSelectedBehaviors([...selectedBehaviors, { behavior, value }]);
       saveBehaviorToUpstash(slug, `${behavior}:${value}`);
     }
-    setShowRejoinQuestion(true);
-    setShowThankYouMessage(false);
-    setSelectedRejoinRating(null);
 
+    // Only show the rejoin question if it hasn't been answered yet
+    if (selectedRejoinRating === null) {
+      setShowRejoinQuestion(true);
+    }
+
+    // Flash effect for behavior selection
     setFlashColor(color);
     setFlashBorder(true);
     setTimeout(() => setFlashBorder(false), 300);
@@ -85,9 +87,11 @@ export const RunDetailCard: React.FC<CardProps> = ({ name, realm, role, slug }) 
   const handleRejoinRating = (rating: boolean, color: string) => {
     saveRejoinRating(slug, rating);
     setSelectedRejoinRating(rating);
-    setShowThankYouMessage(true);
+
+    // Show thank-you message and hide rejoin question
     setShowRejoinQuestion(false);
 
+    // Flash effect for rejoin rating
     setFlashColor(color);
     setFlashBorder(true);
     setTimeout(() => setFlashBorder(false), 400);
@@ -173,7 +177,7 @@ export const RunDetailCard: React.FC<CardProps> = ({ name, realm, role, slug }) 
         </div>
       )}
 
-      {showRejoinQuestion && (
+      {showRejoinQuestion && selectedRejoinRating === null && (
         <div className="mt-6 text-center">
           <p className="text-lg font-semibold text-gray-300">Would you group with them again?</p>
           <div className="flex justify-center mt-4 gap-4">
@@ -195,7 +199,7 @@ export const RunDetailCard: React.FC<CardProps> = ({ name, realm, role, slug }) 
         </div>
       )}
 
-      {showThankYouMessage && (
+      {selectedRejoinRating !== null && (
         <div className="mt-6 text-center flex items-center justify-center gap-2">
           <CheckCircle className="w-6 h-6 text-green-500" />
           <span className="font-semibold text-lg">Thank you! Rejoin rating submitted.</span>
