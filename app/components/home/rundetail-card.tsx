@@ -122,7 +122,7 @@ export const RunDetailCard: React.FC<CardProps> = ({ name, realm, role, slug }) 
             title={"Big Dam"}
             icon={<Sword className="w-5 h-5 mr-2" />}
             color="red"
-            onPlusClick={() => handleBehaviorClick("Big Dam:1", "border-red-600")}
+            onPlusClick={() => handleBehaviorClick("Big Dam:1", "border-green-600")}
             onMinusClick={() => handleBehaviorClick("Big Dam:-1", "border-red-600")}
           />
         </div>
@@ -131,8 +131,8 @@ export const RunDetailCard: React.FC<CardProps> = ({ name, realm, role, slug }) 
             title="Uses Defensives"
             icon={<ShieldPlus className="w-5 h-5" />}
             color="blue"
-            onPlusClick={() => handleBehaviorClick("Uses Defensives:1", "border-blue-600")}
-            onMinusClick={() => handleBehaviorClick("Uses Defensives:-1", "border-blue-600")}
+            onPlusClick={() => handleBehaviorClick("Uses Defensives:1", "border-green-600")}
+            onMinusClick={() => handleBehaviorClick("Uses Defensives:-1", "border-red-600")}
           />
         </div>
         <div className="flex justify-center">
@@ -140,8 +140,8 @@ export const RunDetailCard: React.FC<CardProps> = ({ name, realm, role, slug }) 
             title="Good Comms"
             icon={<MessageSquareMore className="w-5 h-5 mr-2" />}
             color="yellow"
-            onPlusClick={() => handleBehaviorClick("Good Comms:1", "border-yellow-600")}
-            onMinusClick={() => handleBehaviorClick("Good Comms:-1", "border-yellow-600")}
+            onPlusClick={() => handleBehaviorClick("Good Comms:1", "border-green-600")}
+            onMinusClick={() => handleBehaviorClick("Good Comms:-1", "border-red-600")}
           />
         </div>
         <div className="flex justify-center">
@@ -150,7 +150,7 @@ export const RunDetailCard: React.FC<CardProps> = ({ name, realm, role, slug }) 
             icon={<HeartPulse className="w-5 h-5 mr-2" />}
             color="green"
             onPlusClick={() => handleBehaviorClick("Giga Heals:1", "border-green-600")}
-            onMinusClick={() => handleBehaviorClick("Giga Heals:-1", "border-green-600")}
+            onMinusClick={() => handleBehaviorClick("Giga Heals:-1", "border-red-600")}
           />
         </div>
       </div>
@@ -168,7 +168,7 @@ export const RunDetailCard: React.FC<CardProps> = ({ name, realm, role, slug }) 
           <p className="text-lg font-semibold text-gray-300">Would you group with them again?</p>
           <div className="flex justify-center mt-4 gap-4">
             <button
-              onClick={() => handleRejoinRating(true, "border-purple-600")}
+              onClick={() => handleRejoinRating(true, "border-cyan-600")}
               className={`px-4 py-2 rounded-lg border transition ${selectedRejoinRating === true ? "bg-green-500 text-white" : "bg-gray-700 text-gray-300 hover:bg-gray-600"
                 }`}
             >
