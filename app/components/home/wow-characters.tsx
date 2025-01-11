@@ -3,6 +3,7 @@ import { CharacterCard } from "./character-card";
 import { WoWDungeon } from "./wow-dungeons";
 
 interface Character {
+  avatarUrl: string;
   id: number;
   realm: string;
   name: string;
@@ -73,6 +74,7 @@ export const WoWCharacters: React.FC<WoWCharactersProps> = ({ characters, userId
               }`}
           >
             <CharacterCard
+              avatarUrl={character.avatarUrl}
               realm={character.realm}
               name={character.name}
               playable_class={character.class}

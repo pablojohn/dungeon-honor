@@ -26,7 +26,7 @@ export async function GET() {
     }
 
     const bnetData = await response.json();
-    const characters = extractCharacterAndRealm(bnetData);
+    const characters = await fetchCharacterDetails(bnetData, accessToken);
 
     return NextResponse.json(characters);
   } catch (error) {
@@ -36,6 +36,47 @@ export async function GET() {
       { status: 500 }
     );
   }
+}
+
+async function fetchCharacterDetails(data: BlizzardData, accessToken: string): Promise<CharacterRealm[]> {
+  const characters = extractCharacterAndRealm(data);
+
+  const characterDetails = await Promise.all(
+    characters.map(async (character) => {
+      try {
+        const mediaResponse = await fetch(
+          `https://us.api.blizzard.com/profile/wow/character/${encodeURIComponent(character.realm.toLowerCase())}/${encodeURIComponent(character.name.toLowerCase())}/character-media?namespace=profile-us&locale=en_US`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+
+        if (mediaResponse.ok) {
+          const mediaData = await mediaResponse.json();
+          return {
+            ...character,
+            avatarUrl: mediaData.assets?.find((asset: { key: string }) => asset.key === 'avatar')?.value || null,
+          };
+        } else {
+          console.warn(`Failed to fetch media for character ${character.name} on realm ${character.realm}`);
+          return {
+            ...character,
+            avatarUrl: null,
+          };
+        }
+      } catch (error) {
+        console.error(`Error fetching media for character ${character.name} on realm ${character.realm}:`, error);
+        return {
+          ...character,
+          avatarUrl: null,
+        };
+      }
+    })
+  );
+
+  return characterDetails;
 }
 
 function extractCharacterAndRealm(data: BlizzardData): CharacterRealm[] {
@@ -79,6 +120,7 @@ interface CharacterRealm {
   realm: string;
   class: string;
   race: string;
+  avatarUrl?: string;
 }
 
 interface CharacterClass {

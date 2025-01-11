@@ -5,6 +5,7 @@ import { WoWCharacters } from "./wow-characters";
 
 export default function WoWData({ userId }: { userId: string }) {
   interface Character {
+    avatarUrl: string;
     id: number;
     name: string;
     realm: string;
