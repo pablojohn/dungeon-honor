@@ -3,7 +3,7 @@ import { Coffee } from "lucide-react";
 
 export default function Footer() {
     return (
-        <footer className="border-t border-gray-700 bg-gradient-to-t from-gray-900 to-gray-800 text-white py-6 px-4 sm:py-8 sm:px-12">
+        <footer className="border-t border-gray-700 bg-gradient-to-t from-gray-900 to-gray-800 text-white py-4 px-4 sm:py-4 sm:px-8">
             <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
                 {/* Left Section */}
                 <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-center">
@@ -34,7 +34,7 @@ export default function Footer() {
             </div>
 
             {/* Footer Credits */}
-            <div className="mt-6 text-center text-sm text-gray-400">
+            <div className="mt-4 lg:mt-0 text-center text-sm text-gray-400">
                 © {new Date().getFullYear()} Dungeon Honor. All rights reserved.
             </div>
         </footer>
