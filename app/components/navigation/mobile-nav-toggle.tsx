@@ -50,7 +50,7 @@ export default function MobileNavToggle({ username, isLoggedIn, onSignOut, onSig
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="absolute top-16 left-0 w-full bg-gray-900 text-white shadow-md">
+        <div className="absolute top-16 right-0 w-full bg-gray-900 text-white shadow-md">
           <nav className="flex flex-col gap-4 p-4">
             <Link href="/" className="hover:bg-gray-700 rounded px-3 py-2">
               Home
@@ -58,21 +58,12 @@ export default function MobileNavToggle({ username, isLoggedIn, onSignOut, onSig
             <Link href="/report" className="hover:bg-gray-700 rounded px-3 py-2">
               Reports
             </Link>
-            {isLoggedIn ? (
-              <button
-                onClick={onSignOut}
-                className="hover:bg-gray-700 rounded px-3 py-2 text-left"
-              >
-                Sign Out
-              </button>
-            ) : (
-              <button
-                onClick={onSignIn}
-                className="hover:bg-gray-700 rounded px-3 py-2 text-left"
-              >
-                Sign In
-              </button>
-            )}
+            <button
+              onClick={isLoggedIn ? onSignOut : onSignIn}
+              className="bg-blue-700 hover:bg-blue-700 text-white rounded px-3 py-2"
+            >
+              {isLoggedIn ? "Sign Out" : "Sign In"}
+            </button>
           </nav>
         </div>
       )}
