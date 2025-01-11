@@ -7,6 +7,8 @@ import {
   MessageSquareMore,
   HeartPulse,
   CheckCircle,
+  ThumbsUp,
+  ThumbsDown,
 } from "lucide-react";
 import DualButton from "../shared/dual-button";
 
@@ -59,23 +61,22 @@ const saveRejoinRating = async (slug: string, rating: boolean) => {
 };
 
 export const RunDetailCard: React.FC<CardProps> = ({ name, realm, role, slug }) => {
-  const [selectedBehaviors, setSelectedBehaviors] = useState<string[]>([]);
+  const [selectedBehaviors, setSelectedBehaviors] = useState<{ behavior: string; value: 1 | -1 }[]>([]);
   const [showRejoinQuestion, setShowRejoinQuestion] = useState(false);
   const [selectedRejoinRating, setSelectedRejoinRating] = useState<boolean | null>(null);
   const [showThankYouMessage, setShowThankYouMessage] = useState(false);
   const [flashBorder, setFlashBorder] = useState(false);
   const [flashColor, setFlashColor] = useState<string>();
 
-  const handleBehaviorClick = (behavior: string, color: string) => {
-    if (!selectedBehaviors.includes(behavior)) {
-      setSelectedBehaviors([...selectedBehaviors, behavior]);
-      saveBehaviorToUpstash(slug, behavior);
+  const handleBehaviorClick = (behavior: string, value: 1 | -1, color: string) => {
+    if (!selectedBehaviors.some((b) => b.behavior === behavior && b.value === value)) {
+      setSelectedBehaviors([...selectedBehaviors, { behavior, value }]);
+      saveBehaviorToUpstash(slug, `${behavior}:${value}`);
     }
     setShowRejoinQuestion(true);
     setShowThankYouMessage(false);
     setSelectedRejoinRating(null);
 
-    // Trigger the border flash with the specific color
     setFlashColor(color);
     setFlashBorder(true);
     setTimeout(() => setFlashBorder(false), 300);
@@ -122,8 +123,8 @@ export const RunDetailCard: React.FC<CardProps> = ({ name, realm, role, slug }) 
             title={"Big Dam"}
             icon={<Sword className="w-5 h-5 mr-2" />}
             color="red"
-            onPlusClick={() => handleBehaviorClick("Big Dam:1", "border-green-600")}
-            onMinusClick={() => handleBehaviorClick("Big Dam:-1", "border-red-600")}
+            onPlusClick={() => handleBehaviorClick("Big Dam", 1, "border-green-600")}
+            onMinusClick={() => handleBehaviorClick("Big Dam", -1, "border-red-600")}
           />
         </div>
         <div className="flex justify-center">
@@ -131,8 +132,8 @@ export const RunDetailCard: React.FC<CardProps> = ({ name, realm, role, slug }) 
             title="Uses Defensives"
             icon={<ShieldPlus className="w-5 h-5" />}
             color="blue"
-            onPlusClick={() => handleBehaviorClick("Uses Defensives:1", "border-green-600")}
-            onMinusClick={() => handleBehaviorClick("Uses Defensives:-1", "border-red-600")}
+            onPlusClick={() => handleBehaviorClick("Uses Defensives", 1, "border-green-600")}
+            onMinusClick={() => handleBehaviorClick("Uses Defensives", -1, "border-red-600")}
           />
         </div>
         <div className="flex justify-center">
@@ -140,8 +141,8 @@ export const RunDetailCard: React.FC<CardProps> = ({ name, realm, role, slug }) 
             title="Good Comms"
             icon={<MessageSquareMore className="w-5 h-5 mr-2" />}
             color="yellow"
-            onPlusClick={() => handleBehaviorClick("Good Comms:1", "border-green-600")}
-            onMinusClick={() => handleBehaviorClick("Good Comms:-1", "border-red-600")}
+            onPlusClick={() => handleBehaviorClick("Good Comms", 1, "border-green-600")}
+            onMinusClick={() => handleBehaviorClick("Good Comms", -1, "border-red-600")}
           />
         </div>
         <div className="flex justify-center">
@@ -149,17 +150,26 @@ export const RunDetailCard: React.FC<CardProps> = ({ name, realm, role, slug }) 
             title="Giga Heals"
             icon={<HeartPulse className="w-5 h-5 mr-2" />}
             color="green"
-            onPlusClick={() => handleBehaviorClick("Giga Heals:1", "border-green-600")}
-            onMinusClick={() => handleBehaviorClick("Giga Heals:-1", "border-red-600")}
+            onPlusClick={() => handleBehaviorClick("Giga Heals", 1, "border-green-600")}
+            onMinusClick={() => handleBehaviorClick("Giga Heals", -1, "border-red-600")}
           />
         </div>
       </div>
 
       {selectedBehaviors.length > 0 && (
         <div className="mt-6 text-center">
-          <p className="text-lg font-semibold text-gray-300">
-            {selectedBehaviors.join(", ")} {selectedBehaviors.length > 1 ? "were" : "was"} recorded!
-          </p>
+          <div className="flex items-center justify-center gap-4 flex-wrap">
+            {selectedBehaviors.map(({ behavior, value }) => (
+              <div key={`${behavior}-${value}`} className="flex items-center gap-2">
+                {value === 1 ? (
+                  <ThumbsUp className="w-6 h-6 text-green-500" />
+                ) : (
+                  <ThumbsDown className="w-6 h-6 text-red-500" />
+                )}
+                <span className="text-lg font-semibold text-gray-300">{behavior}</span>
+              </div>
+            ))}
+          </div>
         </div>
       )}
 
