@@ -21,7 +21,9 @@ export default async function Home() {
           <p className="text-sm text-gray-400">Log in to rate your teammates.</p>
         </div>
       ) : (
-        <WoWData userId={session?.user?.id ?? ""} />
+        <div className="flex flex-col gap-4 rounded-lg border border-gray-700 bg-gray-800 pt-6 text-gray-300">
+          <WoWData userId={session?.user?.id ?? ""} />
+        </div>
       )}
     </div>
   );

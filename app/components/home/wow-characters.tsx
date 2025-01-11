@@ -67,7 +67,7 @@ export const WoWCharacters: React.FC<WoWCharactersProps> = ({ characters, userId
           <div
             key={character.id}
             onClick={() => handleCardClick(character.id)}
-            className={`relative rounded-lg p-4 transition-transform duration-300 cursor-pointer ${activeCharacterId === character.id
+            className={`relative rounded-lg p-4 cursor-pointer transition-colors duration-300 ease-in-out ${activeCharacterId === character.id
               ? "border-2 border-blue-500 bg-gradient-to-r from-blue-600 to-blue-800 shadow-lg transform scale-105"
               : "border border-gray-700 bg-gray-800 hover:shadow-md hover:scale-105"
               }`}
@@ -84,7 +84,12 @@ export const WoWCharacters: React.FC<WoWCharactersProps> = ({ characters, userId
 
       {/* Dungeon Data Panel */}
       {activeCharacterId && activeCharacter && (
-        <div className="flex flex-col gap-6 rounded-lg border border-gray-700 bg-gray-900 py-6 px-0 sm:px-6 shadow-lg transition-all duration-300">
+        <div
+          className="flex flex-col gap-6 rounded-lg pt-6 sm:px-0 transition-all duration-500 ease-in-out opacity-0 scale-95"
+          style={{
+            animation: 'fadeInScale 0.5s forwards',
+          }}
+        >
           <h2 className="text-2xl font-bold text-white">
             Dungeons for <span className="text-blue-400">{activeCharacter.name}</span>
           </h2>

@@ -104,34 +104,42 @@ export const RunDetailCard: React.FC<CardProps> = ({ name, realm, role, slug }) 
 
       {/* Updated Container for Buttons */}
       <div className="grid grid-cols-2 gap-4 justify-center mt-6">
-        <DualButton
-          title={"Big Dam"}
-          icon={<Sword className="w-5 h-5 mr-2" />}
-          color="red"
-          onPlusClick={() => handleBehaviorClick("Big Dam:1")}
-          onMinusClick={() => handleBehaviorClick("Big Dam:-1")}
-        />
-        <DualButton
-          title="Uses Defensives"
-          icon={<ShieldPlus className="w-5 h-5 mr-2" />}
-          color="blue"
-          onPlusClick={() => handleBehaviorClick("Uses Defensives:1")}
-          onMinusClick={() => handleBehaviorClick("Uses Defensives:-1")}
-        />
-        <DualButton
-          title="Good Comms"
-          icon={<MessageSquareMore className="w-5 h-5 mr-2" />}
-          color="yellow"
-          onPlusClick={() => handleBehaviorClick("Good Comms:1")}
-          onMinusClick={() => handleBehaviorClick("Good Comms:-1")}
-        />
-        <DualButton
-          title="Giga Heals"
-          icon={<HeartPulse className="w-5 h-5 mr-2" />}
-          color="green"
-          onPlusClick={() => handleBehaviorClick("Giga Heals:1")}
-          onMinusClick={() => handleBehaviorClick("Giga Heals:-1")}
-        />
+        <div className="flex justify-center">
+          <DualButton
+            title={"Big Dam"}
+            icon={<Sword className="w-5 h-5 mr-2" />}
+            color="red"
+            onPlusClick={() => handleBehaviorClick("Big Dam:1")}
+            onMinusClick={() => handleBehaviorClick("Big Dam:-1")}
+          />
+        </div>
+        <div className="flex justify-center">
+          <DualButton
+            title="Uses Defensives"
+            icon={<ShieldPlus className="w-5 h-5" />}
+            color="blue"
+            onPlusClick={() => handleBehaviorClick("Uses Defensives:1")}
+            onMinusClick={() => handleBehaviorClick("Uses Defensives:-1")}
+          />
+        </div>
+        <div className="flex justify-center">
+          <DualButton
+            title="Good Comms"
+            icon={<MessageSquareMore className="w-5 h-5 mr-2" />}
+            color="yellow"
+            onPlusClick={() => handleBehaviorClick("Good Comms:1")}
+            onMinusClick={() => handleBehaviorClick("Good Comms:-1")}
+          />
+        </div>
+        <div className="flex justify-center">
+          <DualButton
+            title="Giga Heals"
+            icon={<HeartPulse className="w-5 h-5 mr-2" />}
+            color="green"
+            onPlusClick={() => handleBehaviorClick("Giga Heals:1")}
+            onMinusClick={() => handleBehaviorClick("Giga Heals:-1")}
+          />
+        </div>
       </div>
 
       {/* Remaining Components */}

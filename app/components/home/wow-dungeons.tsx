@@ -95,7 +95,10 @@ export const WoWDungeon: React.FC<WoWDungeonProps> = ({ dungeons, userId, charac
 
       {/* Active Dungeon Details */}
       {activeDungeonId && activeDungeon && (
-        <div className="flex w-full flex-col gap-6 rounded-lg border border-gray-700 bg-slate-800 py-6 px-4 sm:px-6 shadow-lg transition-all duration-300">
+        <div className="flex w-full flex-col gap-6 rounded-lg pt-6 sm:px-0 transition-all duration-300"
+          style={{
+            animation: 'fadeInScale 0.5s forwards',
+          }}>
           <h2 className="text-2xl font-bold text-white">
             Run Detail for <span className="text-blue-400">{activeDungeon.name} {activeDungeon.mythic_level}</span>
           </h2>
