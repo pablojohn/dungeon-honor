@@ -1,13 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { useMediaQuery } from "react-responsive"; // Import useMediaQuery
 import BehaviorGraph from "./behavior-graph";
 import RejoinRatingGraph from "./rejoin-rating-graph";
 import HonorScore from "./honor-score";
 import BehaviorTable from "./behavior-table";
-import RejoinRatingTable from "./rejoin-rating-table"; // Import RejoinRatingTable
-import Link from "next/link"; // Import Link from Next.js
+import RejoinRatingTable from "./rejoin-rating-table";
+import Link from "next/link";
 
 interface BehaviorData {
   data: { key: string }[];
@@ -29,9 +28,7 @@ export default function ReportCard() {
   const [rejoinData, setRejoinData] = useState<RejoinData | null>(null);
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-
-  // Check if the current view is mobile
-  const isMobile = useMediaQuery({ maxWidth: 768 });
+  const [view, setView] = useState("behaviors");
 
   const calculateTeammateScore = (behaviorData: BehaviorData, rejoinData: RejoinData) => {
     if (!behaviorData?.data || !rejoinData?.data) return 0;
@@ -225,7 +222,10 @@ export default function ReportCard() {
       </form>
 
       {submitted && (
-        <div className="flex flex-col gap-6 mt-6">
+        <div className="flex flex-col gap-6 mt-6"
+          style={{
+            animation: 'fadeInScale 0.5s forwards',
+          }}>
           {loading && (
             <p className="text-center text-gray-400">Loading report card...</p>
           )}
@@ -254,21 +254,52 @@ export default function ReportCard() {
                 </Link>
               </h2>
               <HonorScore score={calculateTeammateScore(reportData, rejoinData!)} />
-              {!isMobile && ( // Only display graphs if not in mobile view
-                <div>
-                  <div className="mt-6 rounded-md bg-gray-900 p-6 shadow-md">
-                    <BehaviorGraph chartData={behaviorChartData} />
-                  </div>
-                  <div className="mt-6 rounded-md bg-gray-900 p-6 shadow-md">
-                    <RejoinRatingGraph rejoinData={rejoinData} />
-                  </div>
+
+              {/* Switch Component */}
+              <div className="flex justify-center items-center gap-4 mt-4">
+                <span
+                  className={`cursor-pointer font-semibold ${view === "behaviors" ? "text-white" : "text-gray-400"
+                    }`}
+                  onClick={() => setView("behaviors")}
+                >
+                  Behaviors
+                </span>
+                <div
+                  className="w-16 h-8 bg-gray-600 rounded-full flex items-center cursor-pointer p-1"
+                  onClick={() =>
+                    setView((prev) => (prev === "behaviors" ? "rejoin" : "behaviors"))
+                  }
+                >
+                  <div
+                    className={`w-6 h-6 bg-blue-500 rounded-full shadow-md transform transition-transform duration-200 ${view === "rejoin" ? "translate-x-8" : ""
+                      }`}
+                  ></div>
+                </div>
+                <span
+                  className={`cursor-pointer font-semibold ${view === "rejoin" ? "text-white" : "text-gray-400"
+                    }`}
+                  onClick={() => setView("rejoin")}
+                >
+                  Rejoin Rating
+                </span>
+              </div>
+
+              {/* Conditionally Render Content */}
+              {view === "behaviors" ? (
+                <div className="mt-6 rounded-md bg-gray-900 p-4 shadow-md">
+                  <BehaviorGraph chartData={behaviorChartData} />
+                </div>
+              ) : (
+                <div className="mt-6 rounded-md bg-gray-900 p-4 shadow-md">
+                  <RejoinRatingGraph rejoinData={rejoinData} />
                 </div>
               )}
               <div className="mt-6">
-                <BehaviorTable data={processBehaviorDataForStatistics()} />
-              </div>
-              <div className="mt-6">
-                <RejoinRatingTable data={processRejoinDataForStatistics()} />
+                {view === "behaviors" ? (
+                  <BehaviorTable data={processBehaviorDataForStatistics()} />
+                ) : (
+                  <RejoinRatingTable data={processRejoinDataForStatistics()} />
+                )}
               </div>
             </>
           )}

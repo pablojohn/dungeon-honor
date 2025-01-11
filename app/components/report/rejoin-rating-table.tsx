@@ -11,7 +11,12 @@ interface RejoinRatingTableProps {
 }
 
 export default function RejoinRatingTable({ data }: RejoinRatingTableProps) {
-  console.log(data);
+  // Define a mapping for vote types to colors
+  const voteColors = {
+    positive: "text-purple-500", // Yes votes
+    negative: "text-orange-500", // No votes
+  };
+
   return (
     <div className="rounded-lg bg-gray-800 pt-4 md:pt-6 text-white shadow-md">
       <h3 className="text-lg font-semibold text-center mb-4">
@@ -28,10 +33,10 @@ export default function RejoinRatingTable({ data }: RejoinRatingTableProps) {
                   Player Name
                 </th>
                 <th className="px-2 py-2 text-right text-gray-400 border-b border-gray-700 md:px-4">
-                  - Votes
+                  + Votes
                 </th>
                 <th className="px-2 py-2 text-right text-gray-400 border-b border-gray-700 md:px-4">
-                  + Votes
+                  - Votes
                 </th>
                 <th className="px-2 py-2 text-right text-gray-400 border-b border-gray-700 md:px-4">
                   Total Votes
@@ -48,11 +53,15 @@ export default function RejoinRatingTable({ data }: RejoinRatingTableProps) {
                   <td className="px-2 py-2 text-gray-300 md:px-4">
                     {stat.name}
                   </td>
-                  <td className="px-2 py-2 text-right text-gray-300 md:px-4">
-                    {stat.negativeVotes}
-                  </td>
-                  <td className="px-2 py-2 text-right text-gray-300 md:px-4">
+                  <td
+                    className={`px-2 py-2 text-right md:px-4 ${voteColors.positive}`}
+                  >
                     {stat.positiveVotes}
+                  </td>
+                  <td
+                    className={`px-2 py-2 text-right md:px-4 ${voteColors.negative}`}
+                  >
+                    {stat.negativeVotes}
                   </td>
                   <td className="px-2 py-2 text-right text-gray-300 md:px-4">
                     {stat.positiveVotes + stat.negativeVotes}
@@ -73,17 +82,21 @@ export default function RejoinRatingTable({ data }: RejoinRatingTableProps) {
               } rounded-lg p-4 mb-2 shadow-md`}
           >
             <div className="mb-2 text-lg font-semibold">{stat.name}</div>
-            <div className="text-sm text-gray-400">
-              <p>
-                <strong>- Votes:</strong> {stat.negativeVotes}
-              </p>
-              <p>
-                <strong>+ Votes:</strong> {stat.positiveVotes}
-              </p>
-              <p>
-                <strong>Total Votes:</strong>{" "}
-                {stat.positiveVotes + stat.negativeVotes}
-              </p>
+            <div className="text-sm">
+              <div className="flex justify-between">
+                <span className="text-gray-400">+ Votes:</span>
+                <span className={voteColors.positive}>{stat.positiveVotes}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-400">- Votes:</span>
+                <span className={voteColors.negative}>{stat.negativeVotes}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-400">Total Votes:</span>
+                <span className="text-gray-300">
+                  {stat.positiveVotes + stat.negativeVotes}
+                </span>
+              </div>
             </div>
           </div>
         ))}

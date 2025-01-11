@@ -30,7 +30,7 @@ const BehaviorGraph = ({ chartData }: BehaviorGraphProps) => {
   };
 
   return (
-    <div className="bg-gradient-to-b from-gray-800 to-gray-700 p-8 rounded-lg shadow-lg w-full max-w-3xl mx-auto">
+    <div className="bg-gradient-to-b from-gray-800 to-gray-700 p-2 rounded-lg shadow-lg w-full max-w-3xl mx-auto">
       <h2 className="text-3xl font-extrabold text-white text-center mb-6">
         Behaviors
       </h2>
