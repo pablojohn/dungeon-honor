@@ -63,7 +63,7 @@ export const RunDetailCard: React.FC<CardProps> = ({ name, realm, role, slug }) 
   const [selectedRejoinRating, setSelectedRejoinRating] = useState<boolean | null>(null);
   const [flashBorder, setFlashBorder] = useState(false);
   const [flashColor, setFlashColor] = useState<string>();
-  const [votedFor, setIfVotedFor] = useState<boolean>();
+  const [votedFor, setIfVotedFor] = useState<boolean | undefined>(undefined);
 
   const handleBehaviorClick = (behavior: string, value: 1 | -1, color: string) => {
     if (!selectedBehaviors.some((b) => b.behavior === behavior && b.value === value)) {
@@ -126,6 +126,14 @@ export const RunDetailCard: React.FC<CardProps> = ({ name, realm, role, slug }) 
 
     fetchVotes();
   }, [slug, votedFor]);
+
+  if (votedFor === undefined) {
+    return (
+      <div className="w-full mx-auto p-6 bg-gray-800 rounded-lg shadow-lg text-white">
+        <p className="text-center text-gray-300">Loading...</p>
+      </div>
+    );
+  }
 
   if (votedFor) {
     return (
