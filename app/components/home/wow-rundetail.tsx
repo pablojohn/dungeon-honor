@@ -74,7 +74,8 @@ export const WoWRunDetail: React.FC<WoWRunDetailProps> = ({ keystone_run_id, num
             .replace(" ", "-")
             .toLowerCase()}:${character.realm
               .replace(" ", "-")
-              .toLowerCase()}:${keystone_run_id}:${userId}`;
+              .toLowerCase()}:${keystone_run_id}:${userId.replace("#", "")}`;
+          console.log(`SLUG SLUG SLUG ---- ${slug}`)
           return (
             <div key={character.id}>
               <RunDetailCard

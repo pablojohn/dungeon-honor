@@ -22,7 +22,7 @@ export default async function Home() {
         </div>
       ) : (
         <div className="flex flex-col gap-4 rounded-lg border border-gray-700 bg-gray-800 pt-6 text-gray-300">
-          <WoWData userId={session?.user?.id ?? ""} />
+          <WoWData userId={session?.user?.name ?? ""} />
         </div>
       )}
     </div>
