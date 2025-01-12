@@ -80,8 +80,8 @@ export const WoWDungeon: React.FC<WoWDungeonProps> = ({ dungeons, userId, charac
           <div
             key={dungeon.keystone_run_id}
             onClick={() => handleCardClick(dungeon.keystone_run_id)}
-            className={`rounded-lg p-4 transition-transform duration-300 cursor-pointer ${activeDungeonId === dungeon.keystone_run_id
-              ? "border-2 border-blue-500 bg-gradient-to-r from-gray-800 to-gray-900 shadow-lg transform scale-105"
+            className={`relative rounded-lg p-4 cursor-pointer transition-colors duration-300 ease-in-out ${activeDungeonId === dungeon.keystone_run_id
+              ? "border-2 border-blue-500 bg-gradient-to-r from-blue-600 to-blue-800 shadow-lg transform scale-105"
               : "border border-gray-700 bg-gray-800 hover:shadow-md hover:scale-105"
               }`}
           >
