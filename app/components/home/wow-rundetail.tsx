@@ -1,5 +1,6 @@
 import React from 'react';
 import { RunDetailCard } from './rundetail-card';
+import { Crown } from 'lucide-react';
 
 interface WoWRunDetailProps {
   keystone_run_id: number;
@@ -21,7 +22,6 @@ export const WoWRunDetail: React.FC<WoWRunDetailProps> = ({ keystone_run_id, num
   const clearTimeSeconds = Math.floor(clear_time_ms / 1000);
   const timeRemainingSeconds = Math.floor(time_remaining_ms / 1000);
 
-  // Helper function to format time in minutes or seconds
   const formatTime = (seconds: number) => {
     if (seconds >= 60) {
       const minutes = Math.floor(seconds / 60);
@@ -31,6 +31,16 @@ export const WoWRunDetail: React.FC<WoWRunDetailProps> = ({ keystone_run_id, num
     return `${seconds} second${seconds !== 1 ? 's' : ''}`;
   };
 
+  const renderCrowns = (num: number) => {
+    const totalCrowns = 3;
+    return Array.from({ length: totalCrowns }).map((_, index) => (
+      <Crown
+        key={index}
+        className={`w-10 h-10 ${index < num ? 'text-yellow-400' : 'text-gray-500'}`}
+      />
+    ));
+  };
+
   return (
     <div className="flex flex-col gap-4 flex-grow">
       {/* Run Details Panel */}
@@ -38,10 +48,8 @@ export const WoWRunDetail: React.FC<WoWRunDetailProps> = ({ keystone_run_id, num
         <ul className="flex flex-col sm:flex-wrap md:flex-nowrap items-center gap-6 text-lg">
           {num_chests !== undefined && (
             <li className="flex flex-col items-center gap-1">
-              <span className="font-semibold text-blue-400">
-                Chests
-              </span>
-              <span className="font-medium text-gray-300 text-center">{num_chests}</span>
+              <span className="font-semibold text-blue-400">Chests</span>
+              <div className="flex gap-2">{renderCrowns(num_chests)}</div>
             </li>
           )}
           {clear_time_ms !== undefined && (
