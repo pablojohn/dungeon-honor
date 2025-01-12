@@ -137,7 +137,7 @@ export const RunDetailCard: React.FC<CardProps> = ({ name, realm, role, slug }) 
         </div>
         <div className="mt-6 text-center">
           <span className="font-semibold text-lg text-gray-300">
-            Thanks for your input! Your feedback has already shaped their honor.
+            Thanks for your input! Your feedback has helped shaped their honor.
           </span>
         </div>
       </div>
