@@ -227,12 +227,12 @@ export default function ReportCard() {
             animation: 'fadeInScale 0.5s forwards',
           }}>
           {loading && (
-            <p className="text-center text-gray-400">Loading report card...</p>
+            <p className="text-center text-xl font-semibold text-gray-400">Loading report card...</p>
           )}
           {!loading && !reportData && (
             <div className="flex justify-center">
               <p className="text-center text-xl font-semibold text-gray-400">
-                No report card data found.
+                No honor found for this champion.
               </p>
             </div>
           )}

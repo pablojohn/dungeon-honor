@@ -104,12 +104,12 @@ export const WoWDungeon: React.FC<WoWDungeonProps> = ({ dungeons, userId, charac
           </h2>
           <div className="flex flex-col gap-4 rounded-lg bg-gray-800 py-4">
             {loading && (
-              <p className="text-center text-gray-400 animate-pulse">
+              <p className="text-center text-xl font-semibold text-gray-400 animate-pulse">
                 Loading run detail...
               </p>
             )}
             {error && (
-              <p className="text-center text-red-500">
+              <p className="text-center text-xl font-semibold text-red-500">
                 Error loading dungeon details: {error}
               </p>
             )}

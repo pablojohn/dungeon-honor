@@ -38,7 +38,7 @@ export default function WoWData({ userId }: { userId: string }) {
   if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
-        <div className="animate-pulse text-lg text-gray-300">Loading...</div>
+        <div className="animate-pulse text-xl font-semibold text-gray-300">Loading...</div>
       </div>
     );
   }

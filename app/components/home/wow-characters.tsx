@@ -97,7 +97,7 @@ export const WoWCharacters: React.FC<WoWCharactersProps> = ({ characters, userId
           </h2>
           <div className="flex flex-col gap-4">
             {loading && (
-              <div className="text-center text-gray-400 animate-pulse">Loading dungeons...</div>
+              <div className="text-center text-xl font-semibold text-gray-400 animate-pulse">Loading dungeons...</div>
             )}
             {error && (
               <div className="text-center text-red-500">
