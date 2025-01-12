@@ -129,7 +129,10 @@ export const RunDetailCard: React.FC<CardProps> = ({ name, realm, role, slug }) 
 
   if (votedFor) {
     return (
-      <div className="w-full mx-auto p-2 sm:p-6 bg-gradient-to-r from-gray-800 to-gray-900 rounded-lg shadow-lg text-white">
+      <div className="w-full mx-auto p-2 sm:p-6 bg-gradient-to-r from-gray-800 to-gray-900 rounded-lg shadow-lg text-white"
+        style={{
+          animation: 'fadeInScale 0.5s forwards',
+        }}>
         <div className="text-center">
           <h2 className="text-2xl font-extrabold text-blue-400">{name}</h2>
           <p className="text-sm text-gray-300">{realm}</p>
@@ -148,6 +151,9 @@ export const RunDetailCard: React.FC<CardProps> = ({ name, realm, role, slug }) 
     <div
       className={`w-full mx-auto p-2 sm:p-6 bg-gradient-to-r from-gray-800 to-gray-900 rounded-lg shadow-lg text-white transition-border duration-400 ${flashBorder ? flashColor : "border-gray-700"
         } border-2`}
+      style={{
+        animation: 'fadeInScale 0.5s forwards',
+      }}
     >
       <div className="text-center">
         <h2 className="text-2xl font-extrabold text-blue-400">{name}</h2>

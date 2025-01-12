@@ -110,7 +110,7 @@ export const WoWDungeon: React.FC<WoWDungeonProps> = ({ dungeons, userId, charac
             )}
             {error && (
               <p className="text-center text-xl font-semibold text-red-500">
-                Error loading dungeon details: {error}
+                Error loading dungeon details. Retry in a few moments.
               </p>
             )}
             {!loading && !error && (
