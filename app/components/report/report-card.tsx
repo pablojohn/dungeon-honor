@@ -33,11 +33,11 @@ export default function ReportCard() {
   const calculateTeammateScore = (behaviorData: BehaviorData, rejoinData: RejoinData) => {
     if (!behaviorData?.data || !rejoinData?.data) return 0;
 
-    const categoryScores: { [key: string]: number } = { damage: 0, defense: 0, healing: 0, communication: 0 };
+    const categoryScores: { [key: string]: number } = { big_dam: 0, uses_defensives: 0, good_comms: 0, giga_heals: 0 };
 
     behaviorData.data.forEach((item) => {
       const segments = item.key.split(":");
-      const behaviorName = segments[segments.length - 2];
+      const behaviorName = segments[segments.length - 2].replace(" ", "_").toLowerCase();
       const value = parseInt(segments[segments.length - 1], 10);
 
       if (categoryScores.hasOwnProperty(behaviorName)) {
@@ -46,7 +46,7 @@ export default function ReportCard() {
     });
 
     const totalCategoryScore =
-      (categoryScores.damage + categoryScores.defense + categoryScores.healing + categoryScores.communication) / 4;
+      (categoryScores.big_dam + categoryScores.uses_defensives + categoryScores.good_comms + categoryScores.giga_heals) / 4;
 
     const normalizedCategoryScore = ((totalCategoryScore + 1) / 2) * 100;
 
@@ -116,12 +116,12 @@ export default function ReportCard() {
 
     const positiveVotes = rejoinData.data.filter((item) => {
       const segments = item.key.split(":");
-      return segments[segments.length - 1] === "true"; // Check for "true" votes
+      return segments[segments.length - 1] === "true";
     }).length;
 
     const negativeVotes = rejoinData.data.filter((item) => {
       const segments = item.key.split(":");
-      return segments[segments.length - 1] === "false"; // Check for "false" votes
+      return segments[segments.length - 1] === "false";
     }).length;
 
     return [
@@ -255,7 +255,6 @@ export default function ReportCard() {
               </h2>
               <HonorScore score={calculateTeammateScore(reportData, rejoinData!)} />
 
-              {/* Switch Component */}
               <div className="flex justify-center items-center gap-4 mt-4">
                 <span
                   className={`cursor-pointer font-semibold ${view === "behaviors" ? "text-white" : "text-gray-400"
@@ -284,7 +283,6 @@ export default function ReportCard() {
                 </span>
               </div>
 
-              {/* Conditionally Render Content */}
               {view === "behaviors" ? (
                 <div className="mt-6 rounded-md bg-gray-900 p-4 shadow-md">
                   <BehaviorGraph chartData={behaviorChartData} />
