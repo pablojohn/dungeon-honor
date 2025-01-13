@@ -1,4 +1,5 @@
 import { Redis } from "@upstash/redis";
+import { validateAuth } from "@/app/utils/sessionUtils";
 
 const redis = Redis.fromEnv();
 
@@ -7,6 +8,12 @@ export const config = {
 };
 
 export async function GET(req: Request): Promise<Response> {
+  const { errorResponse } = await validateAuth();
+
+  if (errorResponse) {
+    return errorResponse;
+  }
+
   const url = new URL(req.url);
   const slug = url.searchParams.get("slug");
 

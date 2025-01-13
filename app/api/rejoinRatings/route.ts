@@ -8,6 +8,12 @@ export const config = {
 };
 
 export async function GET(req: Request): Promise<Response> {
+  const { errorResponse } = await validateAuth();
+
+  if (errorResponse) {
+    return errorResponse;
+  }
+
   const url = new URL(req.url);
   const name = url.searchParams.get("name");
   const realm = url.searchParams.get("realm");
