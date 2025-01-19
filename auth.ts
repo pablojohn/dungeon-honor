@@ -18,7 +18,7 @@ const issuer = (process.env.BATTLENET_ISSUER || "https://us.battle.net/oauth") a
   | "https://tw.battle.net/oauth";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  debug: true,
+  // debug: true,
   providers: [
     BattleNet({
       checks: ['pkce', 'nonce'],
